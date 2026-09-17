@@ -1,7 +1,40 @@
-# macOS
-.DS_Store
+# ====================================================================
+# Dangly .gitignore - Cross-platform (.NET 10 / WPF & macOS / Xcode)
+# ====================================================================
 
-# Xcode
+# OS System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+[Tt]humbs.db
+desktop.ini
+
+# .NET / Visual Studio / MSBuild
+**/[Bb]in/
+**/[Oo]bj/
+.vs/
+.dotnet/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+TestResults/
+[Pp]ublish/
+
+# Visual Studio Code & JetBrains IDEs
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.DotSettings.user
+
+# Xcode & Apple Platforms
 build/
 dist/
 DerivedData/
@@ -22,34 +55,19 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 
-# Xcode project — the generated project IS committed so a clean checkout builds
-# without XcodeGen. Per-user state inside it is not.
+# Xcode Project User Overrides
 **/Hangly.xcodeproj/project.xcworkspace/xcuserdata/
 **/Hangly.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 **/Hangly.xcodeproj/xcuserdata/
-
-# Coverage and profiling artefacts
-*.profraw
-*.profdata
-.build/
-**/bin/
-**/obj/
-TestResults/
-
-# .NET / Visual Studio
-.vs/
-.dotnet/
-*.user
-*.suo
-*.userosscache
-*.sln.docstates
 
 # Swift Package Manager
 .build/
 .swiftpm/
 Packages/
 
-# Fastlane / misc
-fastlane/report.xml
-fastlane/screenshots
-
+# Profiling, Logs & Diagnostics
+*.profraw
+*.profdata
+*.log
+*.crash
+crashlytics-build.properties

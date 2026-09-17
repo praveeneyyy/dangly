@@ -1,286 +1,169 @@
 <div align="center">
 
-<img src="Assets/Icons/hangly-icon-256.png" width="128" alt="Dangly">
+<img src="Assets/Icons/hangly-icon-256.png" width="128" alt="Dangly Icon">
 
 # Dangly
 
-**A tiny piece of motion for your desktop.**
+**A physics-simulated hanging charm ornament for your desktop.**
 
-A charm hangs from your menu bar on a simulated rope. Nudge it and it swings,
-carries momentum, and settles — because it is real physics, not a looping
-animation.
+Nudge it and it swings, carries momentum, and settles with real physics — not a looping animation.
 
 <br>
 
-[![Platform](https://img.shields.io/badge/platform-macOS%2014%2B%20%7C%20Windows%2010%2B-black)](#requirements)
-[![Swift](https://img.shields.io/badge/Swift-6.0-orange)](https://swift.org)
-[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com)
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11%20%7C%20macOS%2014%2B-black?style=for-the-badge&logo=windows&logoColor=white)](#requirements)
+[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com)
+[![Swift](https://img.shields.io/badge/Swift-6.0-F05138?style=for-the-badge&logo=swift&logoColor=white)](https://swift.org)
+[![Physics](https://img.shields.io/badge/Physics-240%20Hz%20Verlet-00A67E?style=for-the-badge)](#the-physics-engine)
 
-<img src="Assets/Screenshots/overlay-daruma.png" width="420" alt="A Daruma charm hanging from a beaded cord">
+<br>
+
+<img src="Assets/Screenshots/overlay-daruma.png" width="460" alt="Daruma charm hanging from a beaded cord on the desktop">
 
 </div>
 
 ---
 
-## What it is
+## Overview
 
-Dangly puts one small, beautiful object on your screen and then refuses to fake
-it. The cord is a twenty-segment Verlet rope solved at a fixed 240 Hz. The beads
-threaded above the charm are their own particles, riding the cord. Grab the charm,
-throw it, and the momentum you gave it is the momentum it keeps.
+**Dangly** puts a small, responsive, tactile ornament on your screen that obeys real physical laws. 
 
-It lives in the menu bar / system tray, has no Dock / Taskbar icon and no main window, and goes to sleep
-when nothing is moving — because an ornament that costs you a fan spinning up is
-not an ornament, it is a problem.
+The cord is a twenty-segment Verlet rope solved at a fixed 240 Hz timestep. The beads threaded above the charm are their own simulated particles, riding the curve of the cord. Grab the charm, swing it, or fling it across the desktop — the momentum you give it is the momentum it keeps.
+
+When nothing is moving, the simulation goes to sleep, consuming virtually 0% CPU and zero GPU overhead.
+
+---
 
 ## Features
 
-- **Real physics, not animation.** Verlet integration, distance-constraint
-  relaxation, gravity and damping. No link ever stretches past 1.02× its rest
-  length under any input you can give it.
-- **Rope dynamics you can feel.** Fixed 240 Hz timestep, so the rope behaves
-  identically at 60 Hz, 120 Hz and ProMotion's variable rates.
-- **Interactive charms.** Grab, drag, throw. Release and the rope carries on at
-  the speed you let go at.
-- **Beads on the thread.** The beads above each charm are simulated particles with
-  their own size, weight and spacing — they slide as the rope whips and settle back.
-- **Sixteen charms.** Eleven from a hand-drawn collection of protective and lucky
-  charms from around the world, plus five geometric classics.
-- **Your own charms.** Drop any PNG, JPEG, WebP or HEIC onto the charm and the
-  Studio removes its background, finds the subject, and hangs it on the rope.
-- **Native Windows & macOS.** Windows native WPF / .NET 10 edition with transparent overlay,
-  and native SwiftUI/AppKit on macOS.
-- **Genuinely cheap.** Minimal CPU and memory when settled.
+### 🪢 Real Verlet Physics Engine
+- **Fixed 240 Hz Timestep**: Rope dynamics behave consistently across 60 Hz, 120 Hz, 144 Hz, and variable refresh rate displays.
+- **Gauss-Seidel Distance Constraints**: Segment length relaxation with an adaptive pass budget. Links never stretch past 1.02× rest length.
+- **Independent Bead Simulation**: Beads are simulated as individual Verlet particles tethered to their resting offsets and constrained along the quadratic rope spline.
+- **Sleep / Wake State Machine**: Automatically throttles and suspends updates after 60 still frames. Instantly wakes upon cursor interaction.
 
-## Why Dangly exists
+### 🧿 16 Built-in Charms
+- **11 Cultural Collection Charms**: Hand-drawn protective and symbolic charms from around the world:
+  - *Nazar Boncuğu* (Evil eye protector)
+  - *Hamsa* (Hand of protection)
+  - *Drishti Bommai* (Traditional ward against negative energy)
+  - *Daruma* (Japanese talisman of perseverance)
+  - *Maneki-neko* (Beckoning lucky cat)
+  - *Ghanta* (Sacred temple bell)
+  - *Scarab* (Ancient Egyptian amulet of renewal)
+  - *Pánchang Jié* (Chinese endless mystic knot)
+  - *Nimbu-mirchi* (Lemon and chili charm)
+  - *Horseshoe* (Classic lucky talisman)
+  - *Himmeli* (Nordic geometric mobile)
+- **5 Geometric Classics**: Circle, Star, Heart, Diamond, and Retro Camera.
 
-Desktops used to have texture. Not features — texture. A dashboard widget that
-did nothing useful, a dock that bounced with more enthusiasm than the task
-deserved, an easter egg someone left in a preferences pane. Software had slack in
-it, and the slack is where personality lived.
+### 🖼️ Charm Studio (Custom Image Uploads)
+- **Drop Any Image**: Drag and drop any `.png`, `.jpg`, `.jpeg`, `.webp`, or `.bmp` file directly onto the desktop charm or Charm Studio.
+- **Smart Background Cutout**: Integrated corner flood-fill and automated luminance background isolation with adjustable tolerance.
+- **Physics Customization**: Fine-tune simulated mass (2.0 – 4.5) and knot inset (where the rope connects to your image).
+- **Auto-Palette Tinting**: Extracted primary, secondary, and highlight colors automatically tint the cord.
 
-Most of that is gone now, traded for density and speed. Which is mostly the right
-trade. But something goes missing when every pixel is load-bearing: the screen you
-stare at for nine hours a day stops feeling like a place and starts feeling like a
-dashboard.
+### 🔔 Physical Audio Synthesis & Custom Sounds
+- **On-Device Harmonic Synthesizer**: Generates striking audio via additive synthesis with percussive attack filtering at 44.1 kHz:
+  - **Wood**: Resonant acoustic knock with filtered attack noise.
+  - **Bell**: Clear chime with long-decay harmonic partials.
+  - **Glass**: High crystal ping.
+  - **Metal**: Metallic strike with inharmonic partials.
+  - **Soft**: Cushioned fabric/felt tap.
+- **Custom `.wav` Audio Support**: Attach your own custom sound files to any custom charm in Charm Studio.
 
-Dangly is one small argument against that. It does nothing. It is a charm on a
-string, hanging off the top of your screen, obeying gravity. You can flick it on
-the way past and watch it swing while you think.
+### 🔒 100% Private & Native
+- **Zero Telemetry**: No analytics, no crash reports, no network calls.
+- **Native Implementation**: High-performance WPF on Windows (.NET 10) and native SwiftUI/AppKit on macOS.
 
-The physics matter more than they should, and that is the whole point. A looping
-GIF would have been an afternoon's work and would read as decoration — the eye
-knows the difference between a thing that is drawn moving and a thing that is
-moving. A real solver, sleeping when it settles and waking when you touch it,
-reads as an object. That is the difference between an ornament on your screen and
-an ornament in your room.
+---
 
-## Screenshots
+## Desktop Controls & Shortcuts
 
-| The collection | Mid-swing |
+| Action | Control |
 |---|---|
-| <img src="Assets/Screenshots/charm-collection.png" width="420" alt="Twelve charms hanging on simulated ropes"> | <img src="Assets/Screenshots/overlay-swing-light.png" width="220" alt="A Maneki-neko charm mid-swing"> |
+| **Grab & Move** | Click and hold anywhere on the charm body |
+| **Throw / Fling** | Drag with velocity and release; momentum carries into the swing |
+| **Open Settings** | Double-click the charm body, or right-click the system tray / menu bar icon $\rightarrow$ **Settings…** |
+| **Charm Studio** | Drop an image directly on the charm, or right-click tray icon $\rightarrow$ **✦ Open Charm Studio…** |
+| **Reset Rope Position** | Right-click tray icon $\rightarrow$ **Reset Rope** |
 
-| About | The installer |
+---
+
+## The Physics Engine
+
+| Property | Implementation |
 |---|---|
-| <img src="Assets/Screenshots/about-window.png" width="360" alt="Hangly's About window"> | <img src="Assets/Screenshots/installer.png" width="360" alt="The Hangly disk image"> |
+| **Integration** | Position-based Verlet (position & previous position; velocity is implicit) |
+| **Timestep** | Fixed 240 Hz ($dt = 1/240 \text{ s}$), decoupled from monitor refresh rate |
+| **Segments** | 20 rope segments with 21 nodes |
+| **Constraints** | Gauss-Seidel distance constraint relaxation |
+| **Curve Smoothing** | Quadratic Bezier spline sampled through node midpoints |
+| **Bead Projection** | Dual-pass tethered sliding with non-penetration separation passes |
+| **Power Consumption** | Suspends when still; ~0.02 ms compute time during motion |
 
-<details>
-<summary>The whole collection</summary>
+---
 
-<img src="Assets/Screenshots/collection-sheet.png" width="760" alt="All sixteen built-in charms">
+## Building and Running
 
-</details>
-
-## Requirements
-
-- macOS 14 Sonoma or later
-- Apple Silicon
-
-Hangly is built `arm64`-only. Intel Macs are not supported today; see
-[the roadmap](#roadmap).
-
-## Installation
-
-Download `Hangly.dmg` from [Releases](../../releases), open it, and drag Hangly to
-Applications.
-
-> **The first launch will be refused by Gatekeeper.** Hangly is not yet signed
-> with an Apple Developer ID, so macOS will say the developer cannot be verified.
-> Right-click the app and choose **Open**, then confirm — once. This is the honest
-> state of a hobby project without a $99/year membership, not a sign something is
-> wrong. Signing and notarisation are the first item on the roadmap.
-
-Hangly appears in your menu bar. There is no Dock icon and no window — that is
-expected. A fresh install adds itself as a login item; turn that off in
-**Settings → General** if you would rather it did not.
-
-## Building from source
-
-```sh
-git clone <your-repo-url>
-cd Hangly
-open Hangly.xcodeproj
-```
-
-Select the **Hangly** scheme and press ⌘R. The project file is committed, so a
-clean checkout builds with no generator or package manager.
-
-From the command line:
-
-```sh
-xcodebuild -project Hangly.xcodeproj -scheme Hangly -configuration Debug build
-xcodebuild -project Hangly.xcodeproj -scheme Hangly -configuration Debug test
-```
-
-To build what ships, including the disk image:
-
-```sh
-./Scripts/build-dmg.sh          # → dist/Hangly.app and dist/Hangly.dmg
-```
+### Prerequisites
+- **Windows**: Windows 10 or 11, [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
+- **macOS**: macOS 14 Sonoma or later, Apple Silicon, Xcode 16+
 
 ### Windows (.NET 10 / WPF)
 
-Building and testing from the command line:
+1. Clone the repository:
+   ```bash
+   git clone <your-repo-url>
+   cd Dangly
+   ```
 
-```sh
-dotnet build windows/Hangly.Windows.sln
-dotnet test windows/Hangly.Windows.sln
+2. Build and run:
+   ```bash
+   dotnet run --project windows/Hangly.Windows/Hangly.Windows.csproj
+   ```
+
+3. Run automated tests:
+   ```bash
+   dotnet test windows/Hangly.Windows.sln
+   ```
+
+4. Publish self-contained release:
+   ```bash
+   dotnet publish windows/Hangly.Windows/Hangly.Windows.csproj -c Release -r win-x64 --self-contained
+   ```
+
+### macOS (Swift / SwiftUI)
+
+1. Open the project:
+   ```bash
+   cd macos && open Hangly.xcodeproj
+   ```
+
+2. Build and test via command line:
+   ```bash
+   xcodebuild -project macos/Hangly.xcodeproj -scheme Hangly -configuration Debug build
+   xcodebuild -project macos/Hangly.xcodeproj -scheme Hangly -configuration Debug test
+   ```
+
+---
+
+## Repository Structure
+
 ```
-
-Or publish a self-contained release executable:
-
-```sh
-dotnet publish windows/Hangly.Windows/Hangly.Windows.csproj -c Release -r win-x64 --self-contained
+├── Assets/
+│   ├── Charms/            # Hand-drawn collection SVGs
+│   ├── Icons/             # Application icons
+│   └── Screenshots/       # Visual showcase assets
+├── windows/
+│   ├── Hangly.Windows/    # Native Windows WPF application (.NET 10)
+│   │   ├── Models/        # Charms, palettes, settings data models
+│   │   ├── Physics/       # 240 Hz Verlet solver, RopeCurve, RopeBead
+│   │   ├── Rendering/     # Transparent DirectX/WPF overlay canvas
+│   │   ├── Services/      # Audio synthesizer, image processor, stores
+│   │   └── Views/         # Overlay, Settings, and Charm Studio windows
+│   └── Hangly.Windows.Tests/ # Test suite covering physics, beads, audio, and SVG splitting
+├── macos/
+│   ├── Hangly/            # Native macOS app (SwiftUI & AppKit)
+│   └── Tests/             # Swift Testing test suite
+└── PHYSICS_SPEC.md        # Mathematical specification for the 240 Hz solver
 ```
-
-There are three configurations. **Debug** for development; **Release** for
-profiling, optimised but still carrying the debug overlay and diagnostic logging;
-**Production** for distribution, with every development surface compiled out. See
-[the distribution report](Docs/DISTRIBUTION.md) for what that means in detail.
-
-## The physics engine
-
-The rope is twenty segments and twenty-one nodes, anchored at the top and weighted
-at the charm.
-
-| | |
-|---|---|
-| Integration | Verlet — position and previous position, no velocity array |
-| Timestep | Fixed 240 Hz, decoupled from the display rate |
-| Constraints | Gauss-Seidel relaxation with an adaptive pass budget |
-| Stretch ceiling | 1.02× rest length, enforced as a one-sided constraint |
-| Sleep | After 60 still frames; nothing redraws until something moves |
-| Cost | 0.02 ms per frame, about 0.3% of a 120 Hz budget |
-
-Verlet was chosen over an explicit spring solver because it is unconditionally
-stable at the constraint counts a rope needs, and because momentum survives a drag
-release for free: releasing simply stops writing the position, and the gap the
-drag left behind becomes the node's velocity.
-
-Beads ride the cord as their own Verlet particles, projected back onto the curve
-each step and tethered to the place the artwork drew them. The bead pass reads the
-rope and writes only beads, so no amount of bead behaviour can disturb the rope's
-own solver.
-
-Full detail: **[Docs/Physics.md](Docs/Physics.md)**
-
-## The SVG charm system
-
-Each collection charm is one hand-drawn SVG: a cord, a few beads, then the charm.
-Hangly takes it apart to hang it — the charm goes on the end of the rope and its
-beads become separate physics particles.
-
-The artwork is never edited. Where the beads end and the charm begins is *measured*
-from the asset: a row crossed only by the cord is a few percent of the artwork's
-width, a row through a bead or the charm is far wider, so the solid parts fall out
-of the silhouette. At rest the result is laid out exactly as it was drawn.
-
-Everything is rendered from vector at the display's real pixel density and cached
-per size, so a charm is crisp on Retina at any scale.
-
-Full detail: **[Docs/SVG-Import.md](Docs/SVG-Import.md)** and
-**[Docs/Charm-System.md](Docs/Charm-System.md)**
-
-## Performance
-
-Measured on the shipped Production build, Apple Silicon, macOS 26:
-
-| State | CPU | Memory |
-|---|---|---|
-| Settled | **0.6%** of one core | **26 MB** |
-| Rope moving | ~15% of one core | 33 MB |
-| Launch → on screen | ~210 ms | — |
-
-The settled figure is the one that matters, because that is where Hangly spends
-almost all of its life. When the rope stops moving the solver stops working, no
-snapshot is published, SwiftUI never invalidates, and the canvas is never asked to
-draw. The moving figure is dominated by the cost of redrawing a transparent window
-at the display's rate rather than by anything in the simulation — emptying the
-canvas entirely only saves about a third of it.
-
-There are no filters anywhere in the render path. Blur and shadow filters
-rasterise an offscreen layer every frame, and at 120 Hz that alone costs tens of
-megabytes and a good share of a core. Everything is strokes, gradients and cached
-bitmaps.
-
-## Privacy
-
-Hangly collects nothing. Not "anonymised" nothing — nothing.
-
-- **No telemetry.** No usage reporting, no crash reporting, no phone-home.
-- **No analytics.** Nothing counts what you do.
-- **No tracking.** No identifiers, no fingerprinting, no profiles.
-- **No network calls at all.** The binary links no networking framework and
-  contains no request code. There is no setting to enable, because there is
-  nothing to enable.
-- **No accounts.** Nothing to sign into.
-
-What stays on your Mac: your settings, in `~/Library/Preferences`, and any charms
-you import, as image files in the app's own Application Support folder. Both are
-plain files you can inspect or delete. Nothing leaves the machine.
-
-Hangly ships unsandboxed, because a sandboxed app cannot register itself as a
-login item from an arbitrary location. It requests no privacy-protected resource:
-no camera, no microphone, no location, no contacts, no screen recording, no
-accessibility permissions. You can verify all of this — the source is here.
-
-## Roadmap
-
-- [ ] Developer ID signing and notarisation, so the first launch is not a fight
-- [ ] Universal binary for Intel Macs
-- [ ] More charms, and a way to share them
-- [ ] Multi-display behaviour beyond "follow the main screen"
-- [ ] An Icon Composer icon, for macOS 26's icon shaping
-
-## FAQ
-
-Short version: it does not collect anything, it barely uses any CPU, and the
-Gatekeeper warning on first launch is expected.
-
-The longer answers, including why it is Apple Silicon only and what to do when the
-rope will not grab, are in **[Docs/FAQ.md](Docs/FAQ.md)**.
-
-## Contributing
-
-Contributions are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) covers the coding
-standards, the pull request workflow and how to report an issue — in short: the
-tests and SwiftLint must pass, comments explain *why*, and physics changes need a
-test that would fail without them.
-
-## Documentation
-
-| | |
-|---|---|
-| [Architecture](Docs/Architecture.md) | How the app is put together, and why |
-| [Physics](Docs/Physics.md) | The rope solver in detail |
-| [Charm system](Docs/Charm-System.md) | Charms, the Library, the Studio |
-| [SVG import](Docs/SVG-Import.md) | The artwork pipeline |
-| [Distribution](Docs/DISTRIBUTION.md) | Build configurations, packaging, release checklist |
-| [FAQ](Docs/FAQ.md) | Common questions |
-| [Changelog](CHANGELOG.md) | What changed, and when |
-
-## License
-
-[MIT](LICENSE)
