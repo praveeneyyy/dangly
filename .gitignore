@@ -17,6 +17,7 @@ desktop.ini
 **/[Oo]bj/
 .vs/
 .dotnet/
+.dotnet_tmp/
 *.user
 *.suo
 *.userosscache
@@ -56,9 +57,9 @@ xcuserdata/
 *.dSYM
 
 # Xcode Project User Overrides
-**/Hangly.xcodeproj/project.xcworkspace/xcuserdata/
-**/Hangly.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
-**/Hangly.xcodeproj/xcuserdata/
+**/*.xcodeproj/project.xcworkspace/xcuserdata/
+**/*.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+**/*.xcodeproj/xcuserdata/
 
 # Swift Package Manager
 .build/

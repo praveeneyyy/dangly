@@ -56,7 +56,11 @@ public sealed class TrayIconManager : IDisposable
         try
         {
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            string iconPng = Path.Combine(baseDir, "Assets", "Icons", "hangly-icon-128.png");
+            string iconPng = Path.Combine(baseDir, "Assets", "Icons", "dangly-icon-128.png");
+            if (!File.Exists(iconPng))
+            {
+                iconPng = Path.Combine(baseDir, "Assets", "Icons", "hangly-icon-128.png");
+            }
 
             if (File.Exists(iconPng))
             {
