@@ -19,5 +19,5 @@ xcrun swiftc -target arm64-apple-macos14.0 -sdk "$SDK" -swift-version 6 -parse-a
   "$ROOT"/Hangly/Utilities/RGBABitmap.swift \
   "$ROOT"/Scripts/SyncCharmAssets.swift
 
-"$BUILD/sync" "$ROOT/Assets/Charms" "$ROOT/Hangly/Assets/Assets.xcassets/CharmArtwork"
+"$BUILD/sync" "$ROOT/../Assets/Charms" "$ROOT/Hangly/Assets/Assets.xcassets/CharmArtwork"
 rm -rf "$BUILD"

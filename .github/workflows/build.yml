@@ -15,6 +15,9 @@ jobs:
     name: Build and test
     # Apple Silicon runner: the project is arm64-only.
     runs-on: macos-15
+    defaults:
+      run:
+        working-directory: macos
 
     steps:
       - uses: actions/checkout@v4
@@ -76,3 +79,24 @@ jobs:
             -destination 'platform=macOS' \
             -derivedDataPath .build \
             build
+
+  build-windows:
+    name: Build and test (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore windows/Hangly.Windows.sln
+
+      - name: Build
+        run: dotnet build windows/Hangly.Windows.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test windows/Hangly.Windows.sln --configuration Release --no-build --verbosity normal
+

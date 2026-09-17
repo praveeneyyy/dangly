@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="Assets/Icons/hangly-icon-256.png" width="128" alt="Hangly">
+<img src="Assets/Icons/hangly-icon-256.png" width="128" alt="Dangly">
 
-# Hangly
+# Dangly
 
 **A tiny piece of motion for your desktop.**
 
@@ -22,8 +22,9 @@ animation.
 <br>
 
 [![Build](https://github.com/sharancreatedthis/Hangly/actions/workflows/build.yml/badge.svg)](https://github.com/sharancreatedthis/Hangly/actions/workflows/build.yml)
-[![Platform](https://img.shields.io/badge/platform-macOS%2014%2B-black)](#requirements)
+[![Platform](https://img.shields.io/badge/platform-macOS%2014%2B%20%7C%20Windows%2010%2B-black)](#requirements)
 [![Swift](https://img.shields.io/badge/Swift-6.0-orange)](https://swift.org)
+[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 <img src="Assets/Screenshots/overlay-daruma.png" width="420" alt="A Daruma charm hanging from a beaded cord">
@@ -34,12 +35,12 @@ animation.
 
 ## What it is
 
-Hangly puts one small, beautiful object on your screen and then refuses to fake
+Dangly puts one small, beautiful object on your screen and then refuses to fake
 it. The cord is a twenty-segment Verlet rope solved at a fixed 240 Hz. The beads
 threaded above the charm are their own particles, riding the cord. Grab the charm,
 throw it, and the momentum you gave it is the momentum it keeps.
 
-It lives in the menu bar, has no Dock icon and no main window, and goes to sleep
+It lives in the menu bar / system tray, has no Dock / Taskbar icon and no main window, and goes to sleep
 when nothing is moving — because an ornament that costs you a fan spinning up is
 not an ornament, it is a problem.
 
@@ -58,12 +59,11 @@ not an ornament, it is a problem.
   charms from around the world, plus five geometric classics.
 - **Your own charms.** Drop any PNG, JPEG, WebP or HEIC onto the charm and the
   Studio removes its background, finds the subject, and hangs it on the rope.
-- **Native SwiftUI and AppKit.** Swift 6 with strict concurrency. No frameworks,
-  no dependencies, nothing vendored.
-- **Genuinely cheap.** 0.6% of one core and 26 MB when settled, measured on the
-  shipped build.
+- **Native Windows & macOS.** Windows native WPF / .NET 10 edition with transparent overlay,
+  and native SwiftUI/AppKit on macOS.
+- **Genuinely cheap.** Minimal CPU and memory when settled.
 
-## Why Hangly exists
+## Why Dangly exists
 
 Desktops used to have texture. Not features — texture. A dashboard widget that
 did nothing useful, a dock that bounced with more enthusiasm than the task
@@ -75,7 +75,7 @@ trade. But something goes missing when every pixel is load-bearing: the screen y
 stare at for nine hours a day stops feeling like a place and starts feeling like a
 dashboard.
 
-Hangly is one small argument against that. It does nothing. It is a charm on a
+Dangly is one small argument against that. It does nothing. It is a charm on a
 string, hanging off the top of your screen, obeying gravity. You can flick it on
 the way past and watch it swing while you think.
 
@@ -150,6 +150,21 @@ To build what ships, including the disk image:
 
 ```sh
 ./Scripts/build-dmg.sh          # → dist/Hangly.app and dist/Hangly.dmg
+```
+
+### Windows (.NET 10 / WPF)
+
+Building and testing from the command line:
+
+```sh
+dotnet build windows/Hangly.Windows.sln
+dotnet test windows/Hangly.Windows.sln
+```
+
+Or publish a self-contained release executable:
+
+```sh
+dotnet publish windows/Hangly.Windows/Hangly.Windows.csproj -c Release -r win-x64 --self-contained
 ```
 
 There are three configurations. **Debug** for development; **Release** for

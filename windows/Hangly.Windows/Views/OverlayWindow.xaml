@@ -1,0 +1,17 @@
+<Window x:Class="Hangly.Windows.Views.OverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:rendering="clr-namespace:Hangly.Windows.Rendering"
+        Title="Dangly"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        ShowActivated="False"
+        AllowDrop="True">
+    <Grid>
+        <rendering:RopeCanvas x:Name="Canvas" />
+    </Grid>
+</Window>

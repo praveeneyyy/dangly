@@ -24,14 +24,25 @@ xcuserdata/
 
 # Xcode project — the generated project IS committed so a clean checkout builds
 # without XcodeGen. Per-user state inside it is not.
-Hangly.xcodeproj/project.xcworkspace/xcuserdata/
-Hangly.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
-Hangly.xcodeproj/xcuserdata/
+**/Hangly.xcodeproj/project.xcworkspace/xcuserdata/
+**/Hangly.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+**/Hangly.xcodeproj/xcuserdata/
 
 # Coverage and profiling artefacts
 *.profraw
 *.profdata
 .build/
+**/bin/
+**/obj/
+TestResults/
+
+# .NET / Visual Studio
+.vs/
+.dotnet/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
 # Swift Package Manager
 .build/
@@ -41,3 +52,4 @@ Packages/
 # Fastlane / misc
 fastlane/report.xml
 fastlane/screenshots
+

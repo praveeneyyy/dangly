@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Hangly.Windows.Tests/Hangly.Windows.Tests.csproj" />
+  <Project Path="Hangly.Windows/Hangly.Windows.csproj" />
+</Solution>

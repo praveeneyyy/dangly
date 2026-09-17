@@ -32,12 +32,12 @@ configs:
   Production: release
 
 fileGroups:
-  - README.md
-  - CONTRIBUTING.md
-  - CHANGELOG.md
-  - SECURITY.md
-  - LICENSE
-  - Docs
+  - ../README.md
+  - ../CONTRIBUTING.md
+  - ../CHANGELOG.md
+  - ../SECURITY.md
+  - ../LICENSE
+  - ../Docs
   - Scripts
   - .swiftlint.yml
   - project.yml
