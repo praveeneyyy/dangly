@@ -77,4 +77,50 @@ public class SmokeTest
             Assert.Equal(charm.BeadCount, regions.Beads.Count);
         }
     }
+
+    [Fact]
+    public void TestImageProcessingFitToSquare()
+    {
+        // Create a 128x128 bitmap with a blue circle
+        int width = 128;
+        int height = 128;
+        int stride = width * 4;
+        byte[] pixels = new byte[height * stride];
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                int dx = x - 64;
+                int dy = y - 64;
+                if (dx * dx + dy * dy <= 40 * 40)
+                {
+                    int idx = (y * stride) + (x * 4);
+                    pixels[idx + 0] = 220; // B
+                    pixels[idx + 1] = 50;  // G
+                    pixels[idx + 2] = 20;  // R
+                    pixels[idx + 3] = 255; // A
+                }
+            }
+        }
+
+        var bs = System.Windows.Media.Imaging.BitmapSource.Create(
+            width, height, 96, 96,
+            System.Windows.Media.PixelFormats.Bgra32,
+            null, pixels, stride);
+
+        var encoder = new System.Windows.Media.Imaging.PngBitmapEncoder();
+        encoder.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bs));
+        using var ms = new System.IO.MemoryStream();
+        encoder.Save(ms);
+        ms.Position = 0;
+
+        // Verify Process runs without throwing ArgumentException or Bgra32 PixelFormat error
+        var processed = Hangly.Windows.Services.CharmImageProcessor.Process(ms);
+        Assert.NotNull(processed);
+        Assert.NotNull(processed.PngData);
+        Assert.True(processed.PngData.Length > 0);
+        Assert.Equal(512, processed.PixelSide);
+        Assert.True(processed.Metrics.Mass >= 2.0 && processed.Metrics.Mass <= 4.5);
+    }
 }

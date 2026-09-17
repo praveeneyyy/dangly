@@ -336,7 +336,7 @@ public sealed class RGBABitmap
             dc.DrawImage(cropped, new Rect(targetX, targetY, targetW, targetH));
         }
 
-        var rtb = new RenderTargetBitmap(outputSide, outputSide, 96, 96, PixelFormats.Bgra32);
+        var rtb = new RenderTargetBitmap(outputSide, outputSide, 96, 96, PixelFormats.Pbgra32);
         rtb.Render(dv);
         rtb.Freeze();
 
