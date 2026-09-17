@@ -36,7 +36,7 @@ fileGroups:
   - ../CONTRIBUTING.md
   - ../CHANGELOG.md
   - ../SECURITY.md
-  - ../LICENSE
+  - ../PHYSICS_SPEC.md
   - ../Docs
   - Scripts
   - .swiftlint.yml

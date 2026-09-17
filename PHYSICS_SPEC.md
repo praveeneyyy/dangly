@@ -1,6 +1,6 @@
-# Hangly Physics Engine Specification
+# Dangly Physics Engine Specification
 
-This specification documents the exact numerical model, equations, constants, and algorithms extracted from the authoritative macOS Swift 6 implementation in `Hangly/Physics/` (`RopeSimulation.swift`, `RopeConfiguration.swift`, `RopePoint.swift`, `RopeBead.swift`, `RopeCurve.swift`, `RopeSimulation+Drag.swift`, `RopeSimulation+Beads.swift`, and `RopeSimulation+Snapshot.swift`).
+This specification documents the exact numerical model, equations, constants, and algorithms extracted from the authoritative macOS Swift 6 implementation in `Dangly/Physics/` (`RopeSimulation.swift`, `RopeConfiguration.swift`, `RopePoint.swift`, `RopeBead.swift`, `RopeCurve.swift`, `RopeSimulation+Drag.swift`, `RopeSimulation+Beads.swift`, and `RopeSimulation+Snapshot.swift`).
 
 The Windows port (`CharmPhysicsEngine.cs`) must reproduce this specification faithfully without approximation or substitution.
 

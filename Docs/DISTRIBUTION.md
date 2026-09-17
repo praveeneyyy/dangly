@@ -1,4 +1,4 @@
-# Hangly — distribution report
+# Dangly — distribution report
 
 Prepared 12 September 2026, against `MARKETING_VERSION 1.0.0 (1)`.
 Measured on an Apple Silicon MacBook Air, macOS 26.6.2, Xcode 26.6.
@@ -13,9 +13,9 @@ there is one blocker to clear before the app can run on anybody else's Mac — s
 
 | | |
 |---|---|
-| Bundle | `Hangly.app`, 5.2 MB |
+| Bundle | `Dangly.app`, 5.2 MB |
 | Executable | 1.14 MB, arm64, stripped |
-| Bundle identifier | `com.hangly.Hangly` |
+| Bundle identifier | `com.hangly.Dangly` |
 | Version | 1.0.0 (1) |
 | Minimum system | macOS 14.0 |
 | Category | Utilities |
@@ -44,7 +44,7 @@ observable. `Production` is what gets archived — the scheme's Archive action n
 points at it.
 
 ```sh
-xcodebuild -project Hangly.xcodeproj -scheme Hangly -configuration Production build
+xcodebuild -project Dangly.xcodeproj -scheme Dangly -configuration Production build
 ```
 
 ## 3. What Production removes
@@ -57,7 +57,7 @@ Everything below is removed by the compiler, not disabled at runtime, via the
 | Diagnostic logging | 19 `info`/`debug` call sites | `HANGLY ROPE DEBUG`, `bootstrapped`, `Overlay panel created` all present in the Release binary, all absent from Production |
 | Rope debug overlay | Node markers, bead rings, the read-out panel | `RopeCanvasView+Debug` compiled out whole |
 | Debug state polling | A `UserDefaults` read five times a second, forever, while the rope was awake | `refreshDebugState` and its two published properties compiled out |
-| Debug default key | `HanglyDebugRope` | `AppConstants.Debug` compiled out |
+| Debug default key | `DanglyDebugRope` | `AppConstants.Debug` compiled out |
 | Artwork override | `HANGLY_CHARM_SVG_DIR` could repoint charm artwork at any folder | String absent from the Production binary; the bundle is the only source |
 | Cache purge | `VectorImage.purge()`, used only by tests | Compiled out |
 | Launch-time artwork audit | Loaded all eleven SVGs at launch to log any missing one | Compiled out; the test suite enforces the same thing at build time |
@@ -140,10 +140,10 @@ notarisation:
 ```sh
 # In project.yml, replace CODE_SIGN_IDENTITY "-" with "Developer ID Application"
 # and set DEVELOPMENT_TEAM, then:
-xcodebuild -project Hangly.xcodeproj -scheme Hangly -configuration Production archive \
-  -archivePath build/Hangly.xcarchive
+xcodebuild -project Dangly.xcodeproj -scheme Dangly -configuration Production archive \
+  -archivePath build/Dangly.xcarchive
 xcrun notarytool submit ... --wait
-xcrun stapler staple Hangly.app
+xcrun stapler staple Dangly.app
 ```
 
 Hardened runtime is already on, which notarisation requires, and there are no
@@ -159,7 +159,7 @@ and the `MenuBarExtra` behaviour the app relies on.
 
 **4. One placeholder.** The category is set to Utilities — a menu bar accessory's
 conventional home, though Entertainment is arguably the better fit for a desktop
-ornament. It is a one-line change in `Hangly/App/Info.plist`.
+ornament. It is a one-line change in `Dangly/App/Info.plist`.
 
 **Not the Mac App Store.** The app ships unsandboxed, because a sandboxed build
 cannot register itself as a login item from an arbitrary location. Direct
@@ -178,8 +178,8 @@ One command builds the app and the disk image:
 
 | Path | What |
 |---|---|
-| `dist/Hangly.app` | The built application, 5.2 MB |
-| `dist/Hangly.dmg` | The compressed disk image, 5.2 MB |
+| `dist/Dangly.app` | The built application, 5.2 MB |
+| `dist/Dangly.dmg` | The compressed disk image, 5.2 MB |
 
 The script uses only what ships with macOS and Xcode — `xcodebuild`, `hdiutil`,
 `tiffutil`, `osascript`, `SetFile`. There is no packaging dependency to install.
@@ -188,13 +188,13 @@ The script uses only what ships with macOS and Xcode — `xcodebuild`, `hdiutil`
 
 ```sh
 # 1. Build, from clean
-xcodebuild -project Hangly.xcodeproj -scheme Hangly \
+xcodebuild -project Dangly.xcodeproj -scheme Dangly \
   -configuration Production -derivedDataPath "$WORK/DerivedData" clean build
 
 # 2. Stage the image's contents
-cp -R "$BUILT_APP" "$STAGING/Hangly.app"
+cp -R "$BUILT_APP" "$STAGING/Dangly.app"
 ln -s /Applications "$STAGING/Applications"
-xattr -cr "$STAGING/Hangly.app"          # nothing of this machine travels with it
+xattr -cr "$STAGING/Dangly.app"          # nothing of this machine travels with it
 
 # 3. Draw the background at both resolutions and combine them into one TIFF
 swiftc -O -parse-as-library -o background Scripts/GenerateDMGBackground.swift
@@ -203,7 +203,7 @@ tiffutil -cathidpicheck "$WORK/bg/background.png" "$WORK/bg/background@2x.png" \
   -out "$STAGING/.background/background.tiff"
 
 # 4. Writable image, so Finder can be asked to lay the window out
-hdiutil create -srcfolder "$STAGING" -volname Hangly -fs HFS+ -format UDRW -ov rw.dmg
+hdiutil create -srcfolder "$STAGING" -volname Dangly -fs HFS+ -format UDRW -ov rw.dmg
 hdiutil attach rw.dmg -noautoopen        # must mount at /Volumes: Finder addresses
                                          # a volume by name and cannot see one
                                          # mounted elsewhere or hidden from browsing
@@ -217,8 +217,8 @@ hdiutil convert rw.dmg -format ULFO -o lzfse.dmg               # LZFSE
 hdiutil convert rw.dmg -format UDZO -imagekey zlib-level=9 -o zlib.dmg
 
 # 7. Verify
-hdiutil verify dist/Hangly.dmg
-codesign --verify --deep --strict dist/Hangly.app
+hdiutil verify dist/Dangly.dmg
+codesign --verify --deep --strict dist/Dangly.app
 ```
 
 ### The window
@@ -230,7 +230,7 @@ with, so the two cannot drift apart. Both live at the top of their files.
 |---|---|
 | Window | 620 × 420 points |
 | Icon size | 112 pt |
-| `Hangly.app` | (170, 238) |
+| `Dangly.app` | (170, 238) |
 | `Applications` | (450, 238) |
 | Background | `.background/background.tiff`, 620 × 420 and 1240 × 840 in one file |
 | Volume icon | The app's own `AppIcon.icns` |
@@ -255,9 +255,9 @@ another megabyte for a resolution nothing asks a disk for.
 | Check | Result |
 |---|---|
 | `hdiutil verify` | Checksum valid |
-| Image contents | `Hangly.app`, `Applications` → `/Applications`, `.background/`, `.DS_Store` |
+| Image contents | `Dangly.app`, `Applications` → `/Applications`, `.background/`, `.DS_Store` |
 | Background | Two representations in one TIFF: 620 × 420 and 1240 × 840 |
-| `.DS_Store` | `backgroundType: 2` (picture), alias resolves to `Hangly:.background:background.tiff` |
+| `.DS_Store` | `backgroundType: 2` (picture), alias resolves to `Dangly:.background:background.tiff` |
 | Icon positions | Read back from the image's own `.DS_Store`: app (170, 238), Applications (450, 238) |
 | Icon size | 112 pt, arrangement none |
 | Build cruft | `.fseventsd` emptied, `.Trashes` removed, extended attributes cleared |
@@ -271,12 +271,12 @@ A copy of the image was given the quarantine attribute Safari applies to a
 download, and then assessed:
 
 ```
-$ spctl -a -vvv -t open --context context:primary-signature Hangly.dmg
-Hangly.dmg: rejected
+$ spctl -a -vvv -t open --context context:primary-signature Dangly.dmg
+Dangly.dmg: rejected
 source=no usable signature
 
-$ spctl -a -vvv /Volumes/Hangly/Hangly.app
-/Volumes/Hangly/Hangly.app: rejected
+$ spctl -a -vvv /Volumes/Dangly/Dangly.app
+/Volumes/Dangly/Dangly.app: rejected
 ```
 
 **This is the blocker from section 6, demonstrated.** Anyone who downloads this
@@ -315,7 +315,7 @@ Ready:
 - [x] dSYM produced, UUID matched to the stripped binary
 - [x] App category set
 - [x] Copyright names its owner
-- [x] `Hangly.app` and `Hangly.dmg` produced and verified
+- [x] `Dangly.app` and `Dangly.dmg` produced and verified
 - [x] Custom Retina background, icon layout, Applications shortcut
 - [x] Image compressed and stripped of build cruft
 - [x] Installs and runs from `/Applications`
@@ -326,8 +326,8 @@ Before it goes anywhere:
       and set `DEVELOPMENT_TEAM` in `project.yml`
 - [ ] **Notarise**, then staple both the app and the image:
       ```sh
-      xcrun notarytool submit dist/Hangly.dmg --apple-id … --team-id … --wait
-      xcrun stapler staple dist/Hangly.dmg
+      xcrun notarytool submit dist/Dangly.dmg --apple-id … --team-id … --wait
+      xcrun stapler staple dist/Dangly.dmg
       ```
 - [ ] **Re-run `spctl`** against a freshly quarantined copy; it must say `accepted`
 - [ ] Decide on **Intel**: `ARCHS = arm64` excludes every Intel Mac

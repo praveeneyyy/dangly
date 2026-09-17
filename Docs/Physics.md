@@ -1,6 +1,6 @@
 # The physics engine
 
-How Hangly's rope is simulated: a Verlet solver with position-based constraints,
+How Dangly's rope is simulated: a Verlet solver with position-based constraints,
 running at a fixed rate independent of the display.
 
 Part of the [architecture documentation](Architecture.md).

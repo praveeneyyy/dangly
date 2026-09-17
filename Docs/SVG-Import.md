@@ -95,7 +95,7 @@ asset catalog as a vector-preserving imageset keyed by charm identifier, with an
 optional dark variant, and reports anything unmapped in either direction.
 `Scripts/generate-charm-previews.sh` then renders every charm's preview PNG and the
 collection sheet through the same renderer the rope uses, reading the SVGs straight
-from the folder via `HANGLY_CHARM_SVG_DIR`. Both scripts compile the same
+from the folder via `DANGLY_CHARM_SVG_DIR`. Both scripts compile the same
 `CollectionCharmCatalog` the app does, so there is one mapping from file to charm.
 A test checks that every metadata entry in the collection resolves to a bundled SVG
 and that the bundled `Assets.car` carries all eleven.

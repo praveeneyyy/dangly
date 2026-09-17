@@ -36,7 +36,7 @@ jobs:
           swift --version
           # Swift 6 language mode is required; fail early and clearly if absent.
           swift --version | grep -qE 'Swift version (6|[7-9])' \
-            || { echo "::error::Hangly needs a Swift 6 toolchain"; exit 1; }
+            || { echo "::error::Dangly needs a Swift 6 toolchain"; exit 1; }
 
       - name: Lint
         run: |

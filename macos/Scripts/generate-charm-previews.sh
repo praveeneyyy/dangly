@@ -22,6 +22,7 @@ xcrun swiftc -target arm64-apple-macos14.0 -sdk "$SDK" -swift-version 6 -O -pars
 
 mkdir -p "$ROOT/../Assets/Screenshots"
 # The collection's artwork is read straight from the designer's SVGs.
+export DANGLY_CHARM_SVG_DIR="$ROOT/../Assets/Charms"
 export HANGLY_CHARM_SVG_DIR="$ROOT/../Assets/Charms"
 "$BUILD/previews" "$ROOT/Hangly/Assets/Assets.xcassets/CharmPreviews" "$ROOT/../Assets/Screenshots/collection-sheet.png"
 rm -rf "$BUILD"

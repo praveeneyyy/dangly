@@ -7,7 +7,7 @@
 That warning means the app is not signed with an Apple Developer ID, which costs
 $99 a year. It says nothing about what the app does.
 
-Right-click Hangly in Applications, choose **Open**, and confirm. You only have to
+Right-click Dangly in Applications, choose **Open**, and confirm. You only have to
 do it once. If you would rather not take my word for any of it, the entire source
 is in this repository and you can build it yourself in about a minute.
 
@@ -15,7 +15,7 @@ Signing and notarisation are the first item on the roadmap.
 
 ### Where is the window?
 
-There isn't one. Hangly lives in the menu bar and has no Dock icon. Look for the
+There isn't one. Dangly lives in the menu bar and has no Dock icon. Look for the
 nazar in your status bar — the charm hangs from the top of your screen.
 
 ### The charm won't grab.
@@ -48,7 +48,7 @@ your choice from then on.
 
 ### Does it work on an Intel Mac?
 
-No. Hangly is built `arm64`-only, so it will not launch on Intel hardware. A
+No. Dangly is built `arm64`-only, so it will not launch on Intel hardware. A
 universal build is on the roadmap; it roughly doubles the binary size, which is
 the only reason it has not been done already.
 
@@ -59,7 +59,7 @@ No. macOS 14 Sonoma is the minimum, because the app relies on `@Observable` and 
 
 ## Privacy
 
-### What does Hangly collect?
+### What does Dangly collect?
 
 Nothing. No telemetry, no analytics, no tracking, no accounts.
 
@@ -72,7 +72,7 @@ code. There is no setting to turn this off, because there is nothing to turn off
 
 Two things, both plain files on your Mac:
 
-- **Settings** in `~/Library/Preferences/com.hangly.Hangly.plist`
+- **Settings** in `~/Library/Preferences/com.hangly.Dangly.plist`
 - **Charms you import**, as images in the app's Application Support folder
 
 Delete either at any time. Nothing leaves the machine.
@@ -80,7 +80,7 @@ Delete either at any time. Nothing leaves the machine.
 ### Why is it not sandboxed?
 
 A sandboxed app cannot register itself as a login item from an arbitrary location.
-That is the whole reason, and it is the trade-off that also keeps Hangly out of the
+That is the whole reason, and it is the trade-off that also keeps Dangly out of the
 Mac App Store. The app requests no privacy-protected resource: no camera, no
 microphone, no location, no contacts, no screen recording, no accessibility access.
 
@@ -88,7 +88,7 @@ microphone, no location, no contacts, no screen recording, no accessibility acce
 
 ### Will this drain my battery?
 
-When the rope is settled — which is nearly all the time — Hangly uses about 0.6%
+When the rope is settled — which is nearly all the time — Dangly uses about 0.6%
 of one core and 26 MB of memory. The solver stops working when nothing is moving,
 no snapshot is published, SwiftUI never invalidates, and the canvas is never asked
 to draw.
@@ -119,8 +119,7 @@ among others. They were drawn for this project.
 
 ### Can I use the artwork in my own project?
 
-The code is MIT. The artwork is not — see [the licence](../LICENSE). Fork the app
-freely; please leave the charms and the branding out of it.
+Original collection charms were crafted specifically for Dangly. Feel free to use the code and charms in your personal projects or build your own custom charms with the built-in Charm Studio.
 
 ### Why do the charms have different weights?
 
@@ -133,8 +132,8 @@ swings slower than a himmeli.
 ### How do I build it?
 
 ```sh
-git clone <your-repo-url>
-cd Hangly && open Hangly.xcodeproj
+git clone https://github.com/praveeneyyy/dangly.git
+cd dangly/macos && open Hangly.xcodeproj
 ```
 
 ⌘R. The project file is committed, so there is no generator or package manager
@@ -143,7 +142,7 @@ step and no dependencies to fetch.
 ### How do I see the physics debug overlay?
 
 ```sh
-defaults write com.hangly.Hangly HanglyDebugRope -bool YES
+defaults write com.hangly.Dangly DanglyDebugRope -bool YES
 ```
 
 It draws every node, every bead and a read-out of the solver's state. It exists in

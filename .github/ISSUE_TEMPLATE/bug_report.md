@@ -27,7 +27,7 @@ than to describe. A few seconds is plenty.
 
 - **macOS version:**
 - **Mac model:** (Apple menu → About This Mac — e.g. MacBook Air M2)
-- **Hangly version:** (Settings → About)
+- **Dangly version:** (Settings → About)
 - **Where the build came from:** downloaded release / built from source
 - **Display:** built-in / external, and its refresh rate if you know it
 
@@ -36,7 +36,7 @@ than to describe. A few seconds is plenty.
 If the app misbehaved rather than just looking wrong, this often has the answer:
 
 ```sh
-log show --predicate 'subsystem == "com.hangly.Hangly"' --last 10m --style compact
+log show --predicate 'subsystem == "com.dangly.Dangly"' --last 10m --style compact
 ```
 
 Note that release builds log only warnings and errors by design.

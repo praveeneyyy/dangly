@@ -1,11 +1,11 @@
-# Contributing to Hangly
+# Contributing to Dangly
 
-Thanks for looking. Hangly is a small, opinionated app, and contributions are
-genuinely welcome — especially bug reports from Macs I do not have.
+Thanks for looking. Dangly is a small, opinionated app, and contributions are
+genuinely welcome.
 
 ## Before you start
 
-For anything larger than a bug fix, **open an issue first**. Hangly has a fairly
+For anything larger than a bug fix, **open an issue first**. Dangly has a fairly
 specific idea of what it wants to be, and it would be a shame for you to build
 something well that turns out not to fit. A short issue saves that.
 
@@ -15,9 +15,8 @@ multi-display behaviour, and anything that makes the settled CPU cost lower.
 ## Getting set up
 
 ```sh
-git clone <your-repo-url>
-cd Hangly
-open Hangly.xcodeproj
+git clone https://github.com/praveeneyyy/dangly.git
+cd dangly
 ```
 
 The project file is committed, so there is no generator or package manager step.
@@ -58,7 +57,7 @@ it, delete it.
 //       several times a second even with the rope asleep.
 ```
 
-**No dependencies.** Hangly links nothing but Apple frameworks, and that is a
+**No dependencies.** Dangly links nothing but native frameworks, and that is a
 feature. A pull request that adds a package will be declined unless it removes
 substantially more code than it adds.
 

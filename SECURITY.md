@@ -7,7 +7,7 @@
 | 1.0.x | Yes |
 | < 1.0 | No |
 
-Hangly is a single-developer project. There is one supported version at a time:
+Dangly is an open source project. There is one supported version at a time:
 the latest release.
 
 ## Reporting a vulnerability
@@ -21,7 +21,7 @@ fix the problem before any detail becomes public.
 Please include:
 
 - What the problem is, and what an attacker could do with it
-- The version of Hangly and of macOS
+- The version of Dangly and OS
 - Steps to reproduce, or a proof of concept if you have one
 - Anything you think the fix should take into account
 
@@ -40,7 +40,7 @@ those windows. Serious issues will always be prioritised over features.
 
 ## Scope
 
-Hangly runs entirely on your Mac. It makes no network calls, has no server, no
+Dangly runs entirely on your device. It makes no network calls, has no server, no
 accounts and no telemetry, so the usual categories of web vulnerability do not
 apply.
 

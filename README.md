@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="Assets/Icons/hangly-icon-256.png" width="128" alt="Dangly Icon">
+<img src="Assets/Icons/dangly-icon-256.png" width="128" alt="Dangly Icon">
 
 # Dangly
 

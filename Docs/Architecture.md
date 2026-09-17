@@ -1,6 +1,6 @@
-# Hangly — Architecture
+# Dangly — Architecture
 
-This document explains how Hangly is put together, why each boundary sits where it
+This document explains how Dangly is put together, why each boundary sits where it
 does, and where Phase 2 plugs in.
 
 ---
@@ -29,7 +29,7 @@ Four rules shape every decision below.
 ```
                           ┌──────────────────────────────┐
                           │            App               │
-                          │  HanglyApp   (SwiftUI scenes)│
+                          │  DanglyApp   (SwiftUI scenes)│
                           │  AppDelegate (lifecycle)     │
                           │  AppEnvironment (DI root)    │
                           └──────────────┬───────────────┘
@@ -149,7 +149,7 @@ belonging to the Settings window is in one place.
 ## 5. Composition root
 
 `AppEnvironment` builds the entire object graph exactly once and owns every service
-lifetime. It is constructed by `AppDelegate`, not by `HanglyApp`, for a specific
+lifetime. It is constructed by `AppDelegate`, not by `DanglyApp`, for a specific
 reason: the delegate is the only place with a guaranteed *launched* and *about to
 terminate* callback. Services therefore start after AppKit is ready, so the overlay
 panel is never created before the window server can place it.
@@ -186,7 +186,7 @@ let environment = AppEnvironment(
 
 The project builds in **Swift 6 language mode with `SWIFT_STRICT_CONCURRENCY = complete`**.
 
-Hangly is a UI app whose entire job is driving windows, so the model is deliberately
+Dangly is a UI app whose entire job is driving windows, so the model is deliberately
 simple: **everything is `@MainActor`.** Services, view models and window classes are
 all main-actor isolated. There is no background work in Phase 1, therefore no
 actor-hopping, no `nonisolated` escape hatches and no `@unchecked Sendable`.
@@ -259,7 +259,7 @@ which is where an overlay belongs. `.screenSaver` would cover system UI the user
 
 **Placement is pure.** `ScreenPlacement` takes `CGRect`s and returns a `CGRect`. It
 imports only CoreGraphics, so anchoring rules are unit-tested exactly, with no display
-attached. `NSScreen+Hangly` is the thin adapter that supplies the bounds.
+attached. `NSScreen+Dangly` is the thin adapter that supplies the bounds.
 
 The geometry works in AppKit's y-up global coordinate space, which means it handles a
 secondary display positioned left of the primary — a negative global origin — without
@@ -284,7 +284,7 @@ Two mechanisms, belt and braces:
 - `NSApp.setActivationPolicy(.accessory)` runs in `applicationDidFinishLaunching`, so
   the behaviour holds even if the app is launched in a way that bypasses the plist.
 
-`HanglyApp` declares only `MenuBarExtra` and `Settings`. There is no `WindowGroup`,
+`DanglyApp` declares only `MenuBarExtra` and `Settings`. There is no `WindowGroup`,
 which is why no window appears at launch.
 
 `MenuBarExtra` uses `.menu` style, so SwiftUI renders the content as a real `NSMenu`.
@@ -337,7 +337,7 @@ launch. `AppSettings.schemaVersion` is written on every save so a future migrati
 be deliberate.
 
 **Launch at login is reconciled, not trusted.** The user can remove the login item in
-System Settings while Hangly is not running. `AppEnvironment.bootstrap()` reads
+System Settings while Dangly is not running. `AppEnvironment.bootstrap()` reads
 `SMAppService` and corrects the stored flag, so the Settings toggle always reflects
 reality.
 
@@ -511,7 +511,7 @@ manifest; the menu follows the store's `entries` automatically.
 
 **Multiple displays.** `ScreenPlacement` is display-agnostic and handles negative
 origins. Add a display identifier to `OverlaySettings` and resolve it in
-`NSScreen+Hangly`.
+`NSScreen+Dangly`.
 
 **Multiple overlays.** `OverlayWindowController` owns one panel. Making it own a
 keyed collection is a contained change, because nothing outside it holds a panel

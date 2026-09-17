@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest something Hangly should do
+about: Suggest something Dangly should do
 title: ''
 labels: enhancement
 assignees: ''
@@ -12,7 +12,7 @@ Describe the idea in a sentence or two.
 
 ## Why
 
-What are you trying to do that Hangly makes hard or impossible today? The problem
+What are you trying to do that Dangly makes hard or impossible today? The problem
 is more useful than the solution — there may be a better answer than the one
 either of us thought of first.
 
@@ -23,7 +23,7 @@ description of the interaction are all welcome.
 
 ## Does it fit?
 
-Hangly is deliberately small: one charm, one rope, no dependencies, no network, and
+Dangly is deliberately small: one charm, one rope, no dependencies, no network, and
 as close to no idle cost as possible. Features that fight those constraints are
 likely to be declined, not because they are bad ideas but because they are a
 different app.
