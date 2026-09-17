@@ -69,4 +69,4 @@ First public release.
 - On macOS 26, large icon sizes are drawn inside the system's icon container,
   which double-frames an icon that has its own rounded background.
 
-[1.0.0]: https://github.com/sharancreatedthis/Hangly/releases/tag/v1.0.0
+[1.0.0]: ../../releases/tag/v1.0.0

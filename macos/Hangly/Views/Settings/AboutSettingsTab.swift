@@ -85,19 +85,7 @@ struct AboutSettingsTab: View {
     }
 
     private var credit: some View {
-        VStack(spacing: 3) {
-            Text("Designed and built by")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-
-            Text("sharancreatedthis")
-                .font(.callout.weight(.medium))
-
-            Text("Photography • Film • Design • Code")
-                .font(.caption)
-                .foregroundStyle(.tertiary)
-        }
-        .accessibilityElement(children: .combine)
+        EmptyView()
     }
 
     // MARK: - Secrets

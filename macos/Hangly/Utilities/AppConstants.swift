@@ -33,7 +33,7 @@ enum AppConstants {
     /// with what Finder's Get Info shows.
     static var copyright: String {
         Bundle.main.object(forInfoDictionaryKey: "NSHumanReadableCopyright") as? String
-            ?? "Copyright © 2026. sharancreatedthis."
+            ?? "Copyright © 2026."
     }
 
     enum Defaults {

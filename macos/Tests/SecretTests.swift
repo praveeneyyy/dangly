@@ -25,7 +25,6 @@ struct SecretTests {
 
         #expect(SecretVault.rare.title == "Achievement Unlocked")
         #expect(SecretVault.rare.message == "You found the rare secret.")
-        #expect(SecretVault.rare.attribution == "– sharancreatedthis")
         #expect(SecretVault.ultraRare.title == "There is no secret.")
         #expect(SecretVault.ultraRare.message == "You just really like clicking buttons.")
     }

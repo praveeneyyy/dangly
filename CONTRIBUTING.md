@@ -15,7 +15,7 @@ multi-display behaviour, and anything that makes the settled CPU cost lower.
 ## Getting set up
 
 ```sh
-git clone https://github.com/sharancreatedthis/Hangly.git
+git clone <your-repo-url>
 cd Hangly
 open Hangly.xcodeproj
 ```

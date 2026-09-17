@@ -133,7 +133,7 @@ swings slower than a himmeli.
 ### How do I build it?
 
 ```sh
-git clone https://github.com/sharancreatedthis/Hangly.git
+git clone <your-repo-url>
 cd Hangly && open Hangly.xcodeproj
 ```
 

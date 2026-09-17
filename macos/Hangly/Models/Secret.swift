@@ -49,7 +49,6 @@ struct SecretVault: Equatable {
     static let rare = Secret(
         title: "Achievement Unlocked",
         message: "You found the rare secret.",
-        attribution: "– sharancreatedthis",
         rarity: .rare
     )
 

@@ -12,16 +12,6 @@ animation.
 
 <br>
 
-<a href="https://github.com/sharancreatedthis/Hangly/releases/latest/download/Hangly.dmg">
-  <img src="https://img.shields.io/badge/Download%20Hangly-1A38AD?style=for-the-badge&logo=apple&logoColor=white" height="64" alt="Download Hangly for macOS — direct disk image download">
-</a>
-
-<sub>macOS 14 or later · Apple Silicon · 5.2 MB</sub>
-
-<br>
-<br>
-
-[![Build](https://github.com/sharancreatedthis/Hangly/actions/workflows/build.yml/badge.svg)](https://github.com/sharancreatedthis/Hangly/actions/workflows/build.yml)
 [![Platform](https://img.shields.io/badge/platform-macOS%2014%2B%20%7C%20Windows%2010%2B-black)](#requirements)
 [![Swift](https://img.shields.io/badge/Swift-6.0-orange)](https://swift.org)
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com)
@@ -86,8 +76,6 @@ moving. A real solver, sleeping when it settles and waking when you touch it,
 reads as an object. That is the difference between an ornament on your screen and
 an ornament in your room.
 
-Designed and built by **sharancreatedthis** — photography, film, design, code.
-
 ## Screenshots
 
 | The collection | Mid-swing |
@@ -131,7 +119,7 @@ expected. A fresh install adds itself as a login item; turn that off in
 ## Building from source
 
 ```sh
-git clone https://github.com/sharancreatedthis/Hangly.git
+git clone <your-repo-url>
 cd Hangly
 open Hangly.xcodeproj
 ```
@@ -295,20 +283,4 @@ test that would fail without them.
 
 ## License
 
-[MIT](LICENSE) for the code.
-
-**The charm artwork is not covered by the MIT licence.** The eleven collection
-SVGs in `Assets/Charms/`, the app icon, and the Hangly name and wordmark are
-© 2026 sharancreatedthis, all rights reserved. You are welcome to build, fork and
-modify the app; please do not redistribute the artwork as your own or ship a
-competing build carrying this branding.
-
----
-
-<div align="center">
-
-Designed and built by **sharancreatedthis**
-
-Photography • Film • Design • Code
-
-</div>
+[MIT](LICENSE)

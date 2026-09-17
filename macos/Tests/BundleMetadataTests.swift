@@ -29,7 +29,7 @@ struct BundleMetadataTests {
     func copyrightMatchesInfoPlist() throws {
         let declared = try #require(appInfoPlist()["NSHumanReadableCopyright"] as? String)
 
-        #expect(declared == "Copyright © 2026. sharancreatedthis.")
+        #expect(declared == "Copyright © 2026.")
         // Running outside the app bundle, this is the fallback; the point of the test
         // is that the fallback and the plist say the same thing.
         #expect(AppConstants.copyright == declared)
