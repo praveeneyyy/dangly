@@ -219,4 +219,3 @@ struct RopeSimulationTests {
         #expect(rope.lastStepCount <= ceiling)
     }
 }
-
