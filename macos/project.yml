@@ -33,10 +33,6 @@ configs:
 
 fileGroups:
   - ../README.md
-  - ../CONTRIBUTING.md
-  - ../CHANGELOG.md
-  - ../SECURITY.md
-  - ../PHYSICS_SPEC.md
   - ../Docs
   - Scripts
   - .swiftlint.yml

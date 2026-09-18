@@ -364,6 +364,24 @@ public partial class SettingsWindow : Window
 
         border.Child = grid;
 
+        border.MouseEnter += (s, e) =>
+        {
+            if (!isActive)
+            {
+                border.Background = (Brush)FindResource("SurfaceHoverBrush");
+                border.BorderBrush = (Brush)FindResource("SurfaceBorderLightBrush");
+            }
+        };
+
+        border.MouseLeave += (s, e) =>
+        {
+            if (!isActive)
+            {
+                border.Background = (Brush)FindResource("SurfaceBrush");
+                border.BorderBrush = (Brush)FindResource("SurfaceBorderBrush");
+            }
+        };
+
         border.MouseLeftButtonDown += (s, e) =>
         {
             _overlayWindow.SetCharm(charm);

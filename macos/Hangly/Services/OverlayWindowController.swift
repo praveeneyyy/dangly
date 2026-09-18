@@ -170,9 +170,13 @@ final class OverlayWindowController {
             edgeInset: AppConstants.Overlay.edgeInset
         )
 
-        panel.setFrame(frame, display: true)
-        // Re-fit the rope without resetting it, so a scale change swings rather than snaps.
-        viewModel.resize(to: frame.size)
+        // Extend height down to the bottom of the screen bounds so the cord can stretch all the way down
+        let fullHeight = max(size.height, frame.maxY - bounds.minY)
+        let extendedFrame = CGRect(x: frame.minX, y: frame.maxY - fullHeight, width: frame.width, height: fullHeight)
+
+        panel.setFrame(extendedFrame, display: true)
+        // Fit the rope to the nominal size so resting length and anchor stay true
+        viewModel.resize(to: size)
     }
 
     // MARK: - Frame clock

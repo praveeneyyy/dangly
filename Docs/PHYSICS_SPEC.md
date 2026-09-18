@@ -124,14 +124,22 @@ Every 240 Hz slice advances through these exact steps in order:
    points[dragIndex].position = current + clampLength(dragTarget - current, travelLimit)
    points[dragIndex].previousPosition = points[dragIndex].position - (dragVelocity * timeStep)
    ```
+3b. **`updateEffectiveSegmentLength(timeStep)` (Dynamic Elastic Stretch & Recoil)**:
+    - **During Drag**: If distance $D = \|\text{dragTarget} - \text{anchor}\| > \text{totalLength}$:
+      `currentSegmentLength = max(segmentLength, D / segmentCount)`
+    - **On Release (`endDrag`)**: Stored elastic strain retracts back to nominal:
+      `currentSegmentLength = max(segmentLength, currentSegmentLength - contraction)`
+      where `contraction = max(excess * 22.0 * dt, (1400.0 / segmentCount) * dt)`.
+      This upward contraction in Verlet integration naturally converts stored potential energy into kinetic momentum, causing the charm to overshoot and oscillate before settling.
 4. **`solveDistanceConstraints()` (Gauss-Seidel Relaxation)**:
    ```
    relaxations = 0
    residual = infinity
+   restLength = (currentSegmentLength > 0) ? currentSegmentLength : segmentLength
    while relaxations < constraintIterations and residual >= convergenceTolerance:
        residual = 0.0
        for i in 0..19:
-           correction = solveLink(i, i + 1, restLength = segmentLength)
+           correction = solveLink(i, i + 1, restLength)
            residual = max(residual, correction)
        relaxations += 1
    ```

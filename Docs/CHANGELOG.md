@@ -5,9 +5,10 @@ All notable changes to Dangly are recorded here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] — 2026-09-12
+## [1.0.0] — 2026-09-18
 
-First public release.
+First public release with dual-platform support for **Windows** and **macOS**.  
+See the [**v1.0.0 Release Notes & Downloads**](release-notes/v1.0.0.md) for direct download links, packages, and installation guides.
 
 ### The app
 
@@ -69,4 +70,4 @@ First public release.
 - On macOS 26, large icon sizes are drawn inside the system's icon container,
   which double-frames an icon that has its own rounded background.
 
-[1.0.0]: ../../releases/tag/v1.0.0
+[1.0.0]: release-notes/v1.0.0.md

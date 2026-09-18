@@ -41,14 +41,14 @@ extension RopeSimulation {
         dragVelocity = velocity.limited(to: configuration.maximumSpeed)
     }
 
-    /// Pins the drag target to the circle the rope can actually reach.
-    ///
-    /// Without this, pulling the cursor past the rope's length holds both ends
-    /// apart further than the rope can span. The links have nowhere to go but
-    /// stretch, and releasing fires the stored tension back as a snap. Clamping
-    /// makes the rope go taut and the charm swing around the anchor instead, which
-    /// is both what a real cord does and what keeps the stretch bound honest.
+    /// When dragging, allows the cord to stretch freely downward to the bottom of the canvas.
+    /// Clamping only prevents the charm from inverting above the anchor ceiling.
     func reachableTarget(for location: CGPoint) -> CGPoint {
+        if dragIndex != nil {
+            let clampedY = max(location.y, anchor.y + 5.0)
+            return CGPoint(x: location.x, y: clampedY)
+        }
+
         let reach = configuration.totalLength * configuration.maximumReachRatio
         let offset = location - anchor
         let distance = offset.magnitude
@@ -57,9 +57,11 @@ extension RopeSimulation {
     }
 
     /// Releases the charm. The velocity written during the final step stays in the
-    /// node's history, so the rope carries on at the speed it was thrown.
+    /// node's history, so the rope carries on at the speed it was thrown, oscillating
+    /// back through elastic recoil.
     func endDrag() {
         dragIndex = nil
         dragVelocity = .zero
+        wake()
     }
 }

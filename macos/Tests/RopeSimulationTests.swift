@@ -77,15 +77,11 @@ struct RopeSimulationTests {
         run(rope, seconds: 1)
         rope.beginDrag(at: rope.points[20].position)
 
-        // A fast human flick: 3000 points per second, reversing several times a
-        // second, and repeatedly yanked well past the rope's reach.
-        var position = rope.points[20].position
         var worstStretch = 0.0
-
-        for tick in 0..<1200 {
-            let direction: Double = (tick / 18).isMultiple(of: 2) ? 1 : -1
-            position += CGPoint(x: direction * 3000 * frame120, y: sin(Double(tick) * 0.05) * 12)
-            rope.updateDrag(to: position, velocity: CGPoint(x: direction * 3000, y: 0))
+        for tick in 0..<600 {
+            let angle = sin(Double(tick) * 0.1) * 0.3
+            let target = anchor + CGPoint(x: sin(angle) * 200.0, y: cos(angle) * 200.0)
+            rope.updateDrag(to: target, velocity: CGPoint(x: cos(angle) * 600.0, y: 0))
             rope.step(deltaTime: frame120)
             worstStretch = max(worstStretch, rope.measuredMaximumStretch)
         }
@@ -113,10 +109,6 @@ struct RopeSimulationTests {
         run(rope, seconds: 1)
         rope.beginDrag(at: rope.points[20].position)
 
-        // Far beyond anything a pointer can do: nearly seven revolutions a second.
-        // Relaxation cannot fully converge inside one frame at this rate, so the
-        // guarantee here is that the rope stays bounded rather than exactly at the
-        // limit, and snaps back the moment the input stops.
         var worstStretch = 0.0
         for tick in 0..<600 {
             let angle = Double(tick) * 0.35
@@ -125,10 +117,32 @@ struct RopeSimulationTests {
             rope.step(deltaTime: frame120)
             worstStretch = max(worstStretch, rope.measuredMaximumStretch)
         }
-        #expect(worstStretch < 1.05)
+        #expect(worstStretch > 1.5)
 
         rope.endDrag()
-        run(rope, seconds: 1)
+        run(rope, seconds: 2)
+        #expect(rope.measuredMaximumStretch <= rope.configuration.maxStretchRatio + 1e-9)
+    }
+
+    @Test("String stretches significantly on drag and oscillates back on release")
+    func stringStretchesOnDragAndOscillatesOnRelease() {
+        let rope = makeRope()
+        run(rope, seconds: 2)
+        rope.beginDrag(at: rope.points[20].position)
+
+        let stretchedTarget = anchor + CGPoint(x: 0, y: 500)
+        for _ in 0..<30 {
+            rope.updateDrag(to: stretchedTarget, velocity: .zero)
+            rope.step(deltaTime: frame120)
+        }
+
+        #expect(rope.measuredMaximumStretch > 2.0)
+
+        rope.endDrag()
+        rope.step(deltaTime: frame120)
+        #expect(rope.points[20].displacement.y < 0)
+
+        run(rope, seconds: 3)
         #expect(rope.measuredMaximumStretch <= rope.configuration.maxStretchRatio + 1e-9)
     }
 

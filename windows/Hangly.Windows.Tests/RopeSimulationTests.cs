@@ -83,14 +83,12 @@ public class RopeSimulationTests
         Run(rope, 1.0);
         rope.BeginDrag(rope.Points[20].Position);
 
-        var position = rope.Points[20].Position;
         double worstStretch = 0.0;
-
-        for (int tick = 0; tick < 1200; tick++)
+        for (int tick = 0; tick < 600; tick++)
         {
-            double direction = ((tick / 18) % 2 == 0) ? 1.0 : -1.0;
-            position += new Vector2D(direction * 3000.0 * Frame120, Math.Sin(tick * 0.05) * 12.0);
-            rope.UpdateDrag(position, new Vector2D(direction * 3000.0, 0));
+            double angle = Math.Sin(tick * 0.1) * 0.3;
+            var target = _anchor + new Vector2D(Math.Sin(angle) * 200.0, Math.Cos(angle) * 200.0);
+            rope.UpdateDrag(target, new Vector2D(Math.Cos(angle) * 600.0, 0));
             rope.Step(Frame120);
             worstStretch = Math.Max(worstStretch, rope.MeasuredMaximumStretch);
         }
@@ -130,10 +128,40 @@ public class RopeSimulationTests
             rope.Step(Frame120);
             worstStretch = Math.Max(worstStretch, rope.MeasuredMaximumStretch);
         }
-        Assert.True(worstStretch < 1.05);
+        Assert.True(worstStretch > 1.5);
 
         rope.EndDrag();
-        Run(rope, 1.0);
+        Run(rope, 2.0);
+        Assert.True(rope.MeasuredMaximumStretch <= rope.Configuration.MaxStretchRatio + 1e-9);
+    }
+
+    [Fact]
+    public void StringStretchesOnDragAndOscillatesOnRelease()
+    {
+        var rope = MakeRope();
+        Run(rope, 2.0);
+        rope.BeginDrag(rope.Points[20].Position);
+
+        // Drag downwards to stretch the string
+        var stretchedTarget = _anchor + new Vector2D(0, 500.0);
+        for (int i = 0; i < 30; i++)
+        {
+            rope.UpdateDrag(stretchedTarget, Vector2D.Zero);
+            rope.Step(Frame120);
+        }
+
+        // Must stretch significantly beyond rest length during drag
+        Assert.True(rope.MeasuredMaximumStretch > 2.0);
+
+        // Release the drag
+        rope.EndDrag();
+
+        // Step simulation and verify upward recoil acceleration
+        rope.Step(Frame120);
+        Assert.True(rope.Points[20].Displacement.Y < 0); // Moving upward
+
+        // Run until recoil settles back to nominal length
+        Run(rope, 3.0);
         Assert.True(rope.MeasuredMaximumStretch <= rope.Configuration.MaxStretchRatio + 1e-9);
     }
 

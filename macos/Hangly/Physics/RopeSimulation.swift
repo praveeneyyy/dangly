@@ -61,6 +61,7 @@ final class RopeSimulation: PhysicsSimulating {
     private(set) var isSleeping = false
 
     private var stillFrames = 0
+    private var currentSegmentLength: Double = 0
 
     private var accumulator: TimeInterval = 0
     // Written by `RopeSimulation+Drag`, read by the solver.
@@ -161,7 +162,7 @@ final class RopeSimulation: PhysicsSimulating {
 
     /// A settled rope is indistinguishable from a still image, so stop drawing one.
     private func updateSleepState() {
-        guard dragIndex == nil else {
+        guard dragIndex == nil, currentSegmentLength <= configuration.segmentLength + 0.001 else {
             stillFrames = 0
             return
         }
@@ -193,6 +194,7 @@ final class RopeSimulation: PhysicsSimulating {
     private func reset(angle: Double) {
         points = RopePoint.chain(configuration: configuration, anchor: anchor, charmMetrics: charmMetrics, angle: angle)
         accumulator = 0
+        currentSegmentLength = configuration.segmentLength
         dragIndex = nil
         dragVelocity = .zero
         lastStepCount = 0
@@ -210,6 +212,7 @@ final class RopeSimulation: PhysicsSimulating {
 
         configuration = fitted
         anchor = RopeConfiguration.Layout.anchor(in: canvasSize)
+        currentSegmentLength = configuration.segmentLength
 
         if needsRebuild {
             reset()
@@ -226,6 +229,8 @@ final class RopeSimulation: PhysicsSimulating {
         enforceAnchor()
         integrate(timeStep: timeStep)
         driveDraggedPoint(timeStep: timeStep)
+
+        updateEffectiveSegmentLength(timeStep: timeStep)
 
         // Relax until converged, or until the pass budget runs out. Written as a
         // `while` because the exit condition is the point: a `for ... where` would
@@ -283,11 +288,34 @@ final class RopeSimulation: PhysicsSimulating {
         points[dragIndex].setVelocity(dragVelocity, timeStep: timeStep)
     }
 
+    private func updateEffectiveSegmentLength(timeStep: Double) {
+        if dragIndex != nil {
+            let dragDistance = (dragTarget - anchor).magnitude
+            let nominalTotalLength = configuration.totalLength
+            if dragDistance > nominalTotalLength, configuration.segmentCount > 0 {
+                let targetSegment = dragDistance / Double(configuration.segmentCount)
+                currentSegmentLength = max(configuration.segmentLength, targetSegment)
+            } else {
+                currentSegmentLength = configuration.segmentLength
+            }
+        } else if currentSegmentLength > configuration.segmentLength {
+            // Elastic recoil towards rest length
+            let stretchExcess = currentSegmentLength - configuration.segmentLength
+            let snapRate = 22.0 // 1/s exponential retraction
+            let minSpeedPerSegment = 1400.0 / Double(configuration.segmentCount)
+            let contraction = max(stretchExcess * snapRate * timeStep, minSpeedPerSegment * timeStep)
+            currentSegmentLength = max(configuration.segmentLength, currentSegmentLength - contraction)
+            wake()
+        } else {
+            currentSegmentLength = configuration.segmentLength
+        }
+    }
+
     /// One relaxation pass.
     /// - Returns: The largest correction applied, so the caller can stop early.
     @discardableResult
     private func solveDistanceConstraints() -> Double {
-        let restLength = configuration.segmentLength
+        let restLength = currentSegmentLength > 0 ? currentSegmentLength : configuration.segmentLength
         var largestCorrection = 0.0
         for index in 0..<(points.count - 1) {
             let correction = solveLink(from: index, to: index + 1, restLength: restLength)
@@ -316,18 +344,9 @@ final class RopeSimulation: PhysicsSimulating {
     }
 
     /// The hard guarantee behind "never stretches unrealistically".
-    ///
-    /// Relaxation targets the rest length and is iterative, so it can leave a link
-    /// long after a violent frame. This pass enforces the ceiling as a one-sided
-    /// constraint: links inside the limit are untouched, and links over it are
-    /// pulled back.
-    ///
-    /// An earlier version snapped the offending node straight onto the limit. That
-    /// oscillated rather than converged, because a chain pinned at both ends had
-    /// each sweep undo the last one's work. Splitting the correction between the two
-    /// ends, exactly as the distance solver does, converges instead.
     private func enforceMaximumStretch() {
-        let limit = configuration.segmentLength * configuration.maxStretchRatio
+        let baseLength = currentSegmentLength > 0 ? currentSegmentLength : configuration.segmentLength
+        let limit = baseLength * configuration.maxStretchRatio
 
         for _ in 0..<configuration.stretchPasses {
             var corrected = false

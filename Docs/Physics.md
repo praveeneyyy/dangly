@@ -39,26 +39,13 @@ two 120 Hz frames match one 60 Hz frame to within 1e-9.
 The accumulator is clamped, so a stall or a wake from sleep cannot trigger a burst of
 catch-up steps that would look like the rope teleporting.
 
-### Inextensibility
+### Inextensibility & Dynamic Drag Stretch
 
-Three mechanisms, in increasing order of severity:
+Dangly combines realistic hanging cord physics with playful interactive elasticity:
 
-1. **Relaxation** pulls each link toward its rest length. It runs adaptively: up to a
-   large pass budget, exiting as soon as no node moved more than a tolerance. A
-   settled rope exits in a pass or two, so the large budget costs nothing except in
-   the rare frame that needs it. The budget must exceed the segment count, because
-   corrections propagate roughly one link per pass — below that, yanking one end
-   leaves the far end unaware and the links between absorb the difference by
-   stretching.
-2. **A one-sided projection** then forces any remaining over-long link back to the
-   ceiling, sharing the correction between its ends. An earlier version snapped the
-   offending node straight onto the limit; that oscillated rather than converged,
-   because with the chain pinned at both ends each sweep undid the last one's work.
-3. **The drag target is clamped** onto the circle the rope can actually reach, and the
-   held node follows it at a bounded speed. Without the first, pulling past the rope's
-   length holds both ends further apart than the rope can span and the links have
-   nowhere to go but stretch. Without the second, a teleporting node leaves the chain
-   an unsolvable configuration for one frame.
+1. **Resting & Free-Swinging Inextensibility**: When free-hanging or swinging naturally, the cord maintains strict inextensibility within a 1.02 stretch ceiling via adaptive Gauss-Seidel relaxation and one-sided inequality projection passes.
+2. **Dynamic Drag Stretch**: When actively dragging the charm, the cord becomes elastically stretchable all the way down to the bottom of the screen. As the drag target extends past the nominal cord length, the effective segment length scales smoothly ($L_{\text{drag}} = D / N$), allowing intermediate nodes and beads to space out naturally.
+3. **Snappy Release Recoil & Pendulum Oscillation**: Upon releasing the drag (`endDrag`), stored elastic strain rapidly retracts the effective rest length back to nominal via exponential spring damping ($\sim 22\text{ s}^{-1}$). This positional retraction naturally converts into upward Verlet momentum, causing the charm to overshoot its resting position and trigger dynamic swinging oscillations ("moving and moving") until damping brings it gently to rest.
 
 Measured worst-case link stretch:
 

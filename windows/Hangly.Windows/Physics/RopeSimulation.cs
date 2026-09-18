@@ -35,6 +35,7 @@ public sealed class RopeSimulation
 
     private int _stillFrames;
     private double _accumulator;
+    private double _currentSegmentLength;
 
     public int? DragIndex { get; private set; }
     public Vector2D DragTarget { get; private set; } = Vector2D.Zero;
@@ -119,7 +120,7 @@ public sealed class RopeSimulation
 
     private void UpdateSleepState()
     {
-        if (DragIndex.HasValue)
+        if (DragIndex.HasValue || _currentSegmentLength > Configuration.SegmentLength + 0.001)
         {
             _stillFrames = 0;
             return;
@@ -156,6 +157,7 @@ public sealed class RopeSimulation
         _points.Clear();
         _points.AddRange(RopePoint.CreateChain(Configuration, Anchor, CharmMetrics, angle));
         _accumulator = 0.0;
+        _currentSegmentLength = Configuration.SegmentLength;
         DragIndex = null;
         DragVelocity = Vector2D.Zero;
         LastStepCount = 0;
@@ -170,6 +172,7 @@ public sealed class RopeSimulation
 
         Configuration = fitted;
         Anchor = RopeConfiguration.Layout.Anchor(canvasSize);
+        _currentSegmentLength = Configuration.SegmentLength;
 
         if (needsRebuild)
         {
@@ -187,6 +190,8 @@ public sealed class RopeSimulation
         EnforceAnchor();
         Integrate(timeStep);
         DriveDraggedPoint(timeStep);
+
+        UpdateEffectiveSegmentLength(timeStep);
 
         int relaxations = 0;
         double residual = double.PositiveInfinity;
@@ -243,9 +248,41 @@ public sealed class RopeSimulation
         _points[index] = p;
     }
 
+    private void UpdateEffectiveSegmentLength(double timeStep)
+    {
+        if (DragIndex.HasValue)
+        {
+            double dragDistance = (DragTarget - Anchor).Magnitude;
+            double nominalTotalLength = Configuration.TotalLength;
+            if (dragDistance > nominalTotalLength && Configuration.SegmentCount > 0)
+            {
+                double targetSegment = dragDistance / Configuration.SegmentCount;
+                _currentSegmentLength = Math.Max(Configuration.SegmentLength, targetSegment);
+            }
+            else
+            {
+                _currentSegmentLength = Configuration.SegmentLength;
+            }
+        }
+        else if (_currentSegmentLength > Configuration.SegmentLength)
+        {
+            // Elastic recoil towards rest length
+            double stretchExcess = _currentSegmentLength - Configuration.SegmentLength;
+            double snapRate = 22.0; // 1/s exponential retraction
+            double minSpeedPerSegment = 1400.0 / Configuration.SegmentCount;
+            double contraction = Math.Max(stretchExcess * snapRate * timeStep, minSpeedPerSegment * timeStep);
+            _currentSegmentLength = Math.Max(Configuration.SegmentLength, _currentSegmentLength - contraction);
+            Wake();
+        }
+        else
+        {
+            _currentSegmentLength = Configuration.SegmentLength;
+        }
+    }
+
     public double SolveDistanceConstraints()
     {
-        double restLength = Configuration.SegmentLength;
+        double restLength = _currentSegmentLength > 0 ? _currentSegmentLength : Configuration.SegmentLength;
         double largestCorrection = 0.0;
         for (int index = 0; index < _points.Count - 1; index++)
         {
@@ -279,7 +316,8 @@ public sealed class RopeSimulation
 
     private void EnforceMaximumStretch()
     {
-        double limit = Configuration.SegmentLength * Configuration.MaxStretchRatio;
+        double baseLength = _currentSegmentLength > 0 ? _currentSegmentLength : Configuration.SegmentLength;
+        double limit = baseLength * Configuration.MaxStretchRatio;
 
         for (int pass = 0; pass < Configuration.StretchPasses; pass++)
         {
@@ -363,6 +401,14 @@ public sealed class RopeSimulation
 
     public Vector2D ReachableTarget(Vector2D location)
     {
+        if (IsDragging)
+        {
+            // While dragging, allow the string to stretch all the way down.
+            // Clamping only prevents the charm from being dragged above the anchor ceiling.
+            double clampedY = Math.Max(location.Y, Anchor.Y + 5.0);
+            return new Vector2D(location.X, clampedY);
+        }
+
         double reach = Configuration.TotalLength * Configuration.MaximumReachRatio;
         var offset = location - Anchor;
         double distance = offset.Magnitude;
@@ -377,6 +423,7 @@ public sealed class RopeSimulation
     {
         DragIndex = null;
         DragVelocity = Vector2D.Zero;
+        Wake();
     }
 
     // MARK: - Beads & Cord

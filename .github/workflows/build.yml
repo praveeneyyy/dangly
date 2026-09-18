@@ -80,6 +80,19 @@ jobs:
             -derivedDataPath .build \
             build
 
+      - name: Package macOS App
+        run: |
+          mkdir -p ../dist/macos
+          cp -R .build/Build/Products/Production/Hangly.app ../dist/macos/Dangly.app
+          cd ../dist/macos
+          zip -r Dangly-macOS.app.zip Dangly.app
+
+      - name: Upload macOS App Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dangly-macOS-app
+          path: dist/macos/Dangly-macOS.app.zip
+
   build-windows:
     name: Build and test (Windows)
     runs-on: windows-latest
@@ -99,4 +112,16 @@ jobs:
 
       - name: Test
         run: dotnet test windows/Hangly.Windows.sln --configuration Release --no-build --verbosity normal
+
+      - name: Publish
+        run: |
+          dotnet publish windows/Hangly.Windows/Hangly.Windows.csproj -c Release -o dist/windows
+          Compress-Archive -Path dist/windows/* -DestinationPath dist/Dangly-Windows.zip -Force
+
+      - name: Upload Windows App Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dangly-Windows-x64
+          path: dist/Dangly-Windows.zip
+
 

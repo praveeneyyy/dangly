@@ -139,11 +139,8 @@ public partial class OverlayWindow : Window
             return;
         }
 
-        Show();
-
         double scale = overlay.Scale;
         Width = 740.0 * scale;
-        Height = 420.0 * scale;
 
         // Position relative to primary screen work area
         var workArea = SystemParameters.WorkArea;
@@ -158,6 +155,7 @@ public partial class OverlayWindow : Window
 
         Left = left;
         Top = top;
+        Height = Math.Max(420.0 * scale, workArea.Bottom - top);
         Opacity = overlay.Opacity;
 
         ICharm? resolvedCharm = null;
@@ -173,7 +171,7 @@ public partial class OverlayWindow : Window
         _simulation.SetCharmMetrics(_activeCharm.Metrics);
         _simulation.SetBeads(_activeCharm.Beads);
 
-        _simulation.Resize(new Size(Width, Height));
+        _simulation.Resize(new Size(Width, 420.0 * scale));
         WakeTicker();
     }
 
