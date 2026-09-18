@@ -45,6 +45,7 @@
 		4A0A1BC058B4B106C2286038 /* CharmLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7712F2D488D01D8046825358 /* CharmLayer.swift */; };
 		5253DDB37E2C692F2A4CAE96 /* RopeSimulation+Beads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0718E91422F16688F25FB4CD /* RopeSimulation+Beads.swift */; };
 		585B8243B9CFB572094A2392 /* RopeSimulationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C865760F4CFB8D2E8C55D9F5 /* RopeSimulationTests.swift */; };
+		585B8243B9CFB572094A2393 /* RopeInteractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C865760F4CFB8D2E8C55D9F6 /* RopeInteractionTests.swift */; };
 		59766A62E904D12E273E0871 /* CharmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D54F55E252D5819F6103A6 /* CharmManager.swift */; };
 		5B3B14AE173D666A42AD0840 /* OverlayPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BA54BC94318916BFA0C32E /* OverlayPanel.swift */; };
 		66FEEB5AD4D26A6D20E2D956 /* Logger+Hangly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0E73DE9A94C895EBD56964 /* Logger+Hangly.swift */; };
@@ -239,6 +240,7 @@
 		C3B3A728A722EA557BF7A920 /* DiamondCharm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiamondCharm.swift; sourceTree = "<group>"; };
 		C77EB4ACD720E4BEE0A4D0D5 /* CharmStudioPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharmStudioPreviews.swift; sourceTree = "<group>"; };
 		C865760F4CFB8D2E8C55D9F5 /* RopeSimulationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RopeSimulationTests.swift; sourceTree = "<group>"; };
+		C865760F4CFB8D2E8C55D9F6 /* RopeInteractionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RopeInteractionTests.swift; sourceTree = "<group>"; };
 		CB5F2CE94B27E8F6B7051F74 /* RopeCanvasView+Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RopeCanvasView+Debug.swift"; sourceTree = "<group>"; };
 		CD124669C9D49C1656CBCBA5 /* ObservationStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationStream.swift; sourceTree = "<group>"; };
 		CF29CBCCDBF3AF36A24B5F16 /* CharmArtworkSplitterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharmArtworkSplitterTests.swift; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 				9D088B5448E37CF101705088 /* LaunchAtLoginPolicyTests.swift */,
 				40C5172E0805333D5DC95586 /* RopeBeadTests.swift */,
 				C865760F4CFB8D2E8C55D9F5 /* RopeSimulationTests.swift */,
+				C865760F4CFB8D2E8C55D9F6 /* RopeInteractionTests.swift */,
 				9E30B56FCA500EC3AA59F7EA /* ScreenPlacementTests.swift */,
 				8B05BF4BD9031603CB99B495 /* SecretTests.swift */,
 				5EA16175086B16059F373787 /* SettingsCodingTests.swift */,
@@ -780,6 +783,7 @@
 				FB184A77358E4FD9F950C7F9 /* LaunchAtLoginPolicyTests.swift in Sources */,
 				DAA8AFBC134D890849B46559 /* RopeBeadTests.swift in Sources */,
 				585B8243B9CFB572094A2392 /* RopeSimulationTests.swift in Sources */,
+				585B8243B9CFB572094A2393 /* RopeInteractionTests.swift in Sources */,
 				45640121F5E6B94F5283831B /* SVGAssetTests.swift in Sources */,
 				26BF0B5489813AF276D911DA /* ScreenPlacementTests.swift in Sources */,
 				DD7A7BAC22926C143672B904 /* SecretTests.swift in Sources */,
