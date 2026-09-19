@@ -170,13 +170,15 @@ final class OverlayWindowController {
             edgeInset: AppConstants.Overlay.edgeInset
         )
 
-        // Extend height down to the bottom of the screen bounds so the cord can stretch all the way down
-        let fullHeight = max(size.height, frame.maxY - bounds.minY)
-        let extendedFrame = CGRect(x: frame.minX, y: frame.maxY - fullHeight, width: frame.width, height: fullHeight)
+        // Cover the full screen bounds so the cord can stretch anywhere on the display
+        panel.setFrame(bounds, display: true)
 
-        panel.setFrame(extendedFrame, display: true)
-        // Fit the rope to the nominal size so resting length and anchor stay true
-        viewModel.resize(to: size)
+        // Calculate local anchor position within the full screen panel
+        let localAnchorX = frame.midX - bounds.minX
+        let localAnchorY = bounds.maxY - frame.maxY + (size.height * RopeConfiguration.Layout.anchorFraction)
+        let localAnchor = CGPoint(x: localAnchorX, y: localAnchorY)
+
+        viewModel.resize(to: bounds.size, anchor: localAnchor, nominalSize: size)
     }
 
     // MARK: - Frame clock

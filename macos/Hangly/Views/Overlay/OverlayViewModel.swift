@@ -145,9 +145,9 @@ final class OverlayViewModel {
     }
 
     /// Re-fits the rope when the overlay's canvas changes size.
-    func resize(to size: CGSize) {
+    func resize(to size: CGSize, anchor: CGPoint? = nil, nominalSize: CGSize? = nil) {
         guard size.width > 0, size.height > 0 else { return }
-        simulation.resize(to: size)
+        simulation.resize(to: size, anchor: anchor, nominalSize: nominalSize)
         snapshot = simulation.snapshot()
     }
 

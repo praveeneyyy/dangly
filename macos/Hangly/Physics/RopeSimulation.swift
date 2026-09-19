@@ -206,12 +206,12 @@ final class RopeSimulation: PhysicsSimulating {
 
     /// Re-fits the rope to a new canvas without discarding its motion, so changing
     /// the overlay scale makes the rope swing rather than snap.
-    func resize(to canvasSize: CGSize) {
-        let fitted = RopeConfiguration.fitted(to: canvasSize)
+    func resize(to canvasSize: CGSize, anchor customAnchor: CGPoint? = nil, nominalSize: CGSize? = nil) {
+        let fitted = RopeConfiguration.fitted(to: nominalSize ?? canvasSize)
         let needsRebuild = points.count != fitted.pointCount
 
         configuration = fitted
-        anchor = RopeConfiguration.Layout.anchor(in: canvasSize)
+        anchor = customAnchor ?? RopeConfiguration.Layout.anchor(in: canvasSize)
         currentSegmentLength = configuration.segmentLength
 
         if needsRebuild {

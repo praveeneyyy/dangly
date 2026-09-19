@@ -79,7 +79,7 @@ Pre-packaged releases are located in the [dist/](file:///c:/Projects/Hangly/dist
 ### Windows
 - **Direct Executable**: [dist/windows/Dangly.exe](file:///c:/Projects/Hangly/dist/windows/Dangly.exe)  
   *Double-click to run immediately (Windows 10/11).*
-- **Portable Zip**: [dist/Dangly-Windows.zip](file:///c:/Projects/Hangly/dist/Dangly-Windows.zip) (~7.96 MB)  
+- **Portable Zip**: [dist/Dangly-Windows.zip](file:///c:/Projects/Hangly/dist/Dangly-Windows.zip) (~7.10 MB)  
   *Extract anywhere and run `Dangly.exe`.*
 
 ### macOS

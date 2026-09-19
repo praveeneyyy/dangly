@@ -2,27 +2,31 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Dangly — Settings"
-        Width="820" Height="620"
-        MinWidth="760" MinHeight="520"
+        Width="800" Height="600"
+        MinWidth="740" MinHeight="500"
         WindowStartupLocation="CenterScreen"
-        Background="#0F0F11"
-        Foreground="#FAFAFA"
-        FontFamily="Segoe UI Variable Text, Segoe UI, -apple-system, system-ui">
+        Background="#09090B"
+        Foreground="#F8FAFC"
+        FontFamily="Segoe UI Variable Text, Segoe UI, -apple-system, sans-serif"
+        UseLayoutRounding="True"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType">
 
     <Window.Resources>
-        <!-- Modern Minimal Palette -->
-        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#0F0F11" />
-        <SolidColorBrush x:Key="SurfaceBrush" Color="#18181B" />
-        <SolidColorBrush x:Key="SurfaceHoverBrush" Color="#202024" />
-        <SolidColorBrush x:Key="SurfaceBorderBrush" Color="#27272A" />
-        <SolidColorBrush x:Key="SurfaceBorderLightBrush" Color="#3F3F46" />
+        <!-- Sophisticated Dark Palette -->
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#09090B" />
+        <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="#0D0D11" />
+        <SolidColorBrush x:Key="SurfaceBrush" Color="#121215" />
+        <SolidColorBrush x:Key="SurfaceHoverBrush" Color="#17171C" />
+        <SolidColorBrush x:Key="SurfaceBorderBrush" Color="#1E1E24" />
+        <SolidColorBrush x:Key="SurfaceBorderLightBrush" Color="#2E2E38" />
         <SolidColorBrush x:Key="AccentBrush" Color="#3B82F6" />
         <SolidColorBrush x:Key="AccentHoverBrush" Color="#2563EB" />
-        <SolidColorBrush x:Key="TextPrimaryBrush" Color="#FAFAFA" />
-        <SolidColorBrush x:Key="TextSecondaryBrush" Color="#A1A1AA" />
-        <SolidColorBrush x:Key="TextMutedBrush" Color="#71717A" />
+        <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F8FAFC" />
+        <SolidColorBrush x:Key="TextSecondaryBrush" Color="#94A3B8" />
+        <SolidColorBrush x:Key="TextMutedBrush" Color="#64748B" />
 
-        <!-- Segmented Tab Style -->
+        <!-- Segmented Tab Navigation Style -->
         <Style TargetType="TabControl">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
@@ -32,9 +36,9 @@
         <Style TargetType="TabItem">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
-            <Setter Property="FontSize" Value="13" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Padding" Value="18,10" />
+            <Setter Property="FontSize" Value="12.5" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="Padding" Value="16,10" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -43,7 +47,7 @@
                                 Background="Transparent" 
                                 BorderBrush="Transparent" 
                                 BorderThickness="0,0,0,2" 
-                                Margin="0,0,6,0"
+                                Margin="0,0,4,0"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter ContentSource="Header" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
@@ -51,6 +55,7 @@
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter TargetName="TabBorder" Property="BorderBrush" Value="{StaticResource AccentBrush}" />
                                 <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+                                <Setter Property="FontWeight" Value="SemiBold" />
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
@@ -61,20 +66,21 @@
             </Setter>
         </Style>
 
-        <!-- Standard Button Style -->
+        <!-- Professional Secondary Button -->
         <Style TargetType="Button">
-            <Setter Property="Background" Value="#222226" />
+            <Setter Property="Background" Value="#17171C" />
             <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
-            <Setter Property="Padding" Value="14,7" />
+            <Setter Property="Padding" Value="14,6" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="{StaticResource SurfaceBorderBrush}" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="FontSize" Value="12" />
-            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontWeight" Value="Medium" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
+                        <Border x:Name="BtnBorder"
+                                Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="6"
@@ -83,11 +89,14 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#2C2C32" />
+                                <Setter Property="Background" Value="#22222A" />
                                 <Setter Property="BorderBrush" Value="{StaticResource SurfaceBorderLightBrush}" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#1A1A1E" />
+                                <Setter Property="Background" Value="#101014" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -95,11 +104,12 @@
             </Setter>
         </Style>
 
-        <!-- Primary Call-to-Action Button -->
+        <!-- Primary Accent Button -->
         <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Background" Value="{StaticResource AccentBrush}" />
             <Setter Property="BorderBrush" Value="#60A5FA" />
             <Setter Property="Foreground" Value="#FFFFFF" />
+            <Setter Property="FontWeight" Value="SemiBold" />
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="{StaticResource AccentHoverBrush}" />
@@ -108,33 +118,60 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Subtle Card Container -->
+        <!-- Minimal Card Container -->
         <Style x:Key="SettingCard" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource SurfaceBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="Padding" Value="18" />
-            <Setter Property="Margin" Value="0,0,0,12" />
+            <Setter Property="Padding" Value="16,14" />
+            <Setter Property="Margin" Value="0,0,0,10" />
         </Style>
 
-        <!-- Modern Checkbox Style -->
+        <!-- Modern Custom Checkbox -->
         <Style TargetType="CheckBox">
             <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
-            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontSize" Value="12.5" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Margin" Value="0,0,0,6" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border x:Name="Box" Width="16" Height="16" CornerRadius="4"
+                                    Background="#17171C" BorderBrush="{StaticResource SurfaceBorderLightBrush}" BorderThickness="1"
+                                    VerticalAlignment="Center" Margin="0,0,10,0">
+                                <Path x:Name="CheckMark" Data="M 3 8 L 6.5 11.5 L 13 4"
+                                      Stroke="#FFFFFF" StrokeThickness="1.8" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                      Visibility="Collapsed" />
+                            </Border>
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Box" Property="Background" Value="{StaticResource AccentBrush}" />
+                                <Setter TargetName="Box" Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Box" Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
-        <!-- Minimal Slider Style -->
+        <!-- Sleek Track Slider Style -->
         <Style TargetType="Slider">
             <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
             <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
         <!-- ComboBox Style -->
         <Style TargetType="ComboBox">
-            <Setter Property="Background" Value="#222226" />
+            <Setter Property="Background" Value="#17171C" />
             <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource SurfaceBorderBrush}" />
             <Setter Property="Padding" Value="10,6" />
@@ -149,23 +186,23 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Header & Segmented Tabs -->
-        <Border Grid.Row="0" Background="#141417" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="0,0,0,1" Padding="24,14,24,0">
+        <!-- Sleek Modern Header -->
+        <Border Grid.Row="0" Background="{StaticResource HeaderBackgroundBrush}" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="0,0,0,1" Padding="28,16,28,0">
             <StackPanel>
                 <Grid Margin="0,0,0,12">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Image Source="/Assets/Icons/dangly-icon-128.png" Width="26" Height="26" Margin="0,0,10,0" RenderOptions.BitmapScalingMode="HighQuality" />
-                        <TextBlock Text="Dangly" FontSize="17" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" />
-                        <TextBlock Text="Settings" FontSize="13" Foreground="{StaticResource TextMutedBrush}" Margin="8,2,0,0" VerticalAlignment="Center" />
+                        <Image Source="/Assets/Icons/dangly-icon-128.png" Width="24" Height="24" Margin="0,0,10,0" RenderOptions.BitmapScalingMode="HighQuality" />
+                        <TextBlock Text="Dangly" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" />
+                        <TextBlock Text="Settings" FontSize="12.5" Foreground="{StaticResource TextMutedBrush}" Margin="8,2,0,0" VerticalAlignment="Center" />
                     </StackPanel>
 
-                    <!-- Version & Status Badge -->
-                    <Border HorizontalAlignment="Right" Background="#1E1E24" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="10,3">
-                        <TextBlock Text="v1.0 • Windows" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}" />
+                    <!-- Version Badge -->
+                    <Border HorizontalAlignment="Right" Background="#17171C" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="10,3">
+                        <TextBlock Text="v1.0 • Desktop Physics" FontSize="11" FontWeight="Medium" Foreground="{StaticResource TextSecondaryBrush}" />
                     </Border>
                 </Grid>
 
-                <!-- Navigation Tabs -->
+                <!-- Clean Navigation Tabs -->
                 <TabControl x:Name="SettingsTabControl" SelectionChanged="OnTabChanged">
                     <TabItem Header="General" />
                     <TabItem Header="Placement &amp; Size" />
@@ -175,27 +212,27 @@
             </StackPanel>
         </Border>
 
-        <!-- Content Area -->
+        <!-- Content Area with Breathable Margins -->
         <Grid Grid.Row="1" Margin="28,20">
             <!-- TAB 0: General Settings -->
             <ScrollViewer x:Name="GeneralTabContent" VerticalScrollBarVisibility="Auto">
-                <StackPanel MaxWidth="620" HorizontalAlignment="Left">
+                <StackPanel MaxWidth="600" HorizontalAlignment="Left">
                     <!-- Overlay Visibility Card -->
                     <Border Style="{StaticResource SettingCard}">
                         <StackPanel>
-                            <TextBlock Text="OVERLAY VISIBILITY" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,10" />
+                            <TextBlock Text="OVERLAY VISIBILITY" FontSize="10.5" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,8" />
                             <CheckBox x:Name="ShowOverlayCheckBox" Content="Show hanging charm overlay on desktop" Click="OnOverlaySettingChanged" FontWeight="Medium" />
-                            <TextBlock Text="The charm swings transparently above desktop windows and responds to physics interaction." FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="20,0,0,0" />
+                            <TextBlock Text="The ornament hangs transparently above desktop windows and obeys real physical laws." FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="26,0,0,0" />
                         </StackPanel>
                     </Border>
 
                     <!-- Sound Card -->
                     <Border Style="{StaticResource SettingCard}">
                         <StackPanel>
-                            <TextBlock Text="PHYSICAL AUDIO CHIMES" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,10" />
-                            <CheckBox x:Name="PlaySoundCheckBox" Content="Play synthetic acoustic chimes on motion, swing, and impact" Click="OnSoundSettingChanged" FontWeight="Medium" Margin="0,0,0,12" />
+                            <TextBlock Text="PHYSICAL AUDIO CHIMES" FontSize="10.5" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,8" />
+                            <CheckBox x:Name="PlaySoundCheckBox" Content="Play synthetic acoustic chimes on motion, swing, and impact" Click="OnSoundSettingChanged" FontWeight="Medium" Margin="0,0,0,10" />
 
-                            <TextBlock Text="Volume" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6" />
+                            <TextBlock Text="Volume" FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,5" />
                             <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -203,20 +240,20 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Slider x:Name="SoundVolumeSlider" Minimum="0.0" Maximum="1.0" Value="0.14" ValueChanged="OnSoundVolumeChanged" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Text="{Binding ElementName=SoundVolumeSlider, Path=Value, StringFormat={}{0:P0}}" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="12" />
-                                <Button Grid.Column="2" Content="🔊 Test Chime" Click="OnTestVolumeClicked" Padding="12,5" />
+                                <TextBlock Grid.Column="1" Text="{Binding ElementName=SoundVolumeSlider, Path=Value, StringFormat={}{0:P0}}" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="11.5" />
+                                <Button Grid.Column="2" Content="🔊 Test Chime" Click="OnTestVolumeClicked" Padding="12,4" />
                             </Grid>
-                            <TextBlock Text="On-device additive harmonic synthesizer: bell rings, wood knocks, and crystal pings." FontSize="12" Foreground="{StaticResource TextMutedBrush}" />
+                            <TextBlock Text="Synthesizes realistic resonant sound: bells, ceramic knocks, and crystal strikes." FontSize="11" Foreground="{StaticResource TextMutedBrush}" />
                         </StackPanel>
                     </Border>
 
                     <!-- System & Startup Card -->
                     <Border Style="{StaticResource SettingCard}">
                         <StackPanel>
-                            <TextBlock Text="STARTUP &amp; INTERACTION" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,10" />
-                            <CheckBox x:Name="LaunchAtStartupCheckBox" Content="Launch Dangly automatically when Windows starts" Click="OnLaunchStartupChanged" FontWeight="Medium" Margin="0,0,0,10" />
+                            <TextBlock Text="STARTUP &amp; INTERACTION" FontSize="10.5" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,8" />
+                            <CheckBox x:Name="LaunchAtStartupCheckBox" Content="Launch Dangly automatically when Windows starts" Click="OnLaunchStartupChanged" FontWeight="Medium" Margin="0,0,0,8" />
                             <CheckBox x:Name="ClickThroughCheckBox" Content="Click-through transparent backdrop" Click="OnClickThroughChanged" FontWeight="Medium" />
-                            <TextBlock Text="When enabled, clicking anywhere outside the charm body passes directly to apps underneath." FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="20,0,0,0" />
+                            <TextBlock Text="When enabled, clicking anywhere outside the charm body passes directly to apps underneath." FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="26,0,0,0" />
                         </StackPanel>
                     </Border>
 
@@ -227,30 +264,30 @@
 
             <!-- TAB 1: Placement & Size Settings -->
             <ScrollViewer x:Name="PlacementTabContent" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
-                <StackPanel MaxWidth="620" HorizontalAlignment="Left">
+                <StackPanel MaxWidth="600" HorizontalAlignment="Left">
                     <!-- Scale & Opacity Card -->
                     <Border Style="{StaticResource SettingCard}">
                         <StackPanel>
-                            <TextBlock Text="SCALE &amp; OPACITY" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,12" />
+                            <TextBlock Text="SCALE &amp; OPACITY" FontSize="10.5" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,10" />
 
-                            <TextBlock Text="Rope &amp; Charm Scale" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
-                            <Grid Margin="0,0,0,14">
+                            <TextBlock Text="Rope &amp; Charm Scale" FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                            <Grid Margin="0,0,0,12">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="54" />
                                 </Grid.ColumnDefinitions>
                                 <Slider x:Name="ScaleSlider" Minimum="0.5" Maximum="2.0" Value="1.0" ValueChanged="OnScaleChanged" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Text="{Binding ElementName=ScaleSlider, Path=Value, StringFormat={}{0:F2}x}" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12" />
+                                <TextBlock Grid.Column="1" Text="{Binding ElementName=ScaleSlider, Path=Value, StringFormat={}{0:F2}x}" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="11.5" />
                             </Grid>
 
-                            <TextBlock Text="Charm Opacity" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                            <TextBlock Text="Charm Opacity" FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
                             <Grid Margin="0,0,0,4">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="54" />
                                 </Grid.ColumnDefinitions>
                                 <Slider x:Name="OpacitySlider" Minimum="0.2" Maximum="1.0" Value="1.0" ValueChanged="OnOpacityChanged" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Text="{Binding ElementName=OpacitySlider, Path=Value, StringFormat={}{0:P0}}" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12" />
+                                <TextBlock Grid.Column="1" Text="{Binding ElementName=OpacitySlider, Path=Value, StringFormat={}{0:P0}}" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="11.5" />
                             </Grid>
                         </StackPanel>
                     </Border>
@@ -258,33 +295,33 @@
                     <!-- Position Card -->
                     <Border Style="{StaticResource SettingCard}">
                         <StackPanel>
-                            <TextBlock Text="DESKTOP ANCHOR &amp; OFFSETS" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,12" />
+                            <TextBlock Text="DESKTOP ANCHOR &amp; OFFSETS" FontSize="10.5" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,10" />
 
-                            <TextBlock Text="Anchor Point" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6" />
-                            <ComboBox x:Name="AnchorComboBox" SelectionChanged="OnAnchorChanged" Margin="0,0,0,14" Width="240" HorizontalAlignment="Left">
+                            <TextBlock Text="Anchor Point" FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6" />
+                            <ComboBox x:Name="AnchorComboBox" SelectionChanged="OnAnchorChanged" Margin="0,0,0,12" Width="220" HorizontalAlignment="Left">
                                 <ComboBoxItem Content="Top-Right (Default)" IsSelected="True" />
                                 <ComboBoxItem Content="Top-Center" />
                                 <ComboBoxItem Content="Top-Left" />
                             </ComboBox>
 
-                            <TextBlock Text="Horizontal Offset" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
-                            <Grid Margin="0,0,0,14">
+                            <TextBlock Text="Horizontal Offset" FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                            <Grid Margin="0,0,0,12">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="54" />
                                 </Grid.ColumnDefinitions>
                                 <Slider x:Name="HorizontalOffsetSlider" Minimum="-300" Maximum="300" Value="12" ValueChanged="OnOffsetsChanged" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Text="{Binding ElementName=HorizontalOffsetSlider, Path=Value, StringFormat={}{0:F0}px}" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12" />
+                                <TextBlock Grid.Column="1" Text="{Binding ElementName=HorizontalOffsetSlider, Path=Value, StringFormat={}{0:F0}px}" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="11.5" />
                             </Grid>
 
-                            <TextBlock Text="Vertical Offset" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                            <TextBlock Text="Vertical Offset" FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
                             <Grid Margin="0,0,0,4">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="54" />
                                 </Grid.ColumnDefinitions>
                                 <Slider x:Name="VerticalOffsetSlider" Minimum="-50" Maximum="200" Value="-12" ValueChanged="OnOffsetsChanged" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Text="{Binding ElementName=VerticalOffsetSlider, Path=Value, StringFormat={}{0:F0}px}" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12" />
+                                <TextBlock Grid.Column="1" Text="{Binding ElementName=VerticalOffsetSlider, Path=Value, StringFormat={}{0:F0}px}" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="11.5" />
                             </Grid>
                         </StackPanel>
                     </Border>
@@ -301,23 +338,23 @@
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0" Margin="0,0,0,14">
-                    <TextBlock Text="Choose a charm to hang on your rope" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center" />
+                    <TextBlock Text="Choose a charm to hang on your rope" FontSize="12.5" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center" />
                     <Button Content="✦ Open Charm Studio…" Style="{StaticResource PrimaryButtonStyle}" Click="OnOpenStudioClicked" HorizontalAlignment="Right" VerticalAlignment="Center" />
                 </Grid>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <!-- Built-in Collection Charms -->
-                        <TextBlock Text="DANGLY COLLECTION (11)" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,10" />
-                        <WrapPanel x:Name="CollectionCharmsPanel" Margin="0,0,0,18" />
+                        <TextBlock Text="DANGLY COLLECTION (11)" FontSize="10.5" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,8" />
+                        <WrapPanel x:Name="CollectionCharmsPanel" Margin="0,0,0,16" />
 
                         <!-- Classic Charms -->
-                        <TextBlock Text="GEOMETRIC CLASSICS (5)" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,10" />
-                        <WrapPanel x:Name="ClassicCharmsPanel" Margin="0,0,0,18" />
+                        <TextBlock Text="GEOMETRIC CLASSICS (5)" FontSize="10.5" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,8" />
+                        <WrapPanel x:Name="ClassicCharmsPanel" Margin="0,0,0,16" />
 
                         <!-- Custom Imported Charms -->
-                        <TextBlock Text="CUSTOM CHARMS" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,10" />
-                        <WrapPanel x:Name="CustomCharmsPanel" Margin="0,0,0,18" />
+                        <TextBlock Text="CUSTOM CHARMS" FontSize="10.5" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,8" />
+                        <WrapPanel x:Name="CustomCharmsPanel" Margin="0,0,0,16" />
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
@@ -325,25 +362,26 @@
             <!-- TAB 3: About -->
             <Grid x:Name="AboutTabContent" Visibility="Collapsed">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel MaxWidth="620" HorizontalAlignment="Left">
+                    <StackPanel MaxWidth="600" HorizontalAlignment="Left">
                         <!-- Branding Banner Card -->
-                        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="14" Margin="0,0,0,16">
+                        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource SurfaceBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
                             <StackPanel>
-                                <Image Source="/Assets/Branding/Dangly-Banner.png" MaxHeight="160" Stretch="Uniform" HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,0,10" />
-                                <TextBlock Text="Things shouldn't just sit there." FontSize="13" FontStyle="Italic" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,4" />
+                                <Image Source="/Assets/Branding/Dangly-Banner.png" MaxHeight="150" Stretch="Uniform" HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,0,8" />
+                                <TextBlock Text="Things shouldn't just sit there." FontSize="12.5" FontStyle="Italic" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center" />
                             </StackPanel>
                         </Border>
 
                         <!-- Overview Card -->
                         <Border Style="{StaticResource SettingCard}">
                             <StackPanel>
-                                <TextBlock Text="ENGINE SPECIFICATIONS" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,10" />
-                                <TextBlock Text="Dangly puts a responsive, tactile charm ornament on your desktop that obeys real physical laws. The simulation runs a 20-segment Verlet integrator solved at fixed 240 Hz with Gauss-Seidel distance relaxation, dynamic stretch recoil, and independent bead projection." 
-                                           FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" TextWrapping="Wrap" LineHeight="18" Margin="0,0,0,12" />
-                                <TextBlock Text="• Fixed 240 Hz Verlet timestep decoupled from display refresh rate." FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
-                                <TextBlock Text="• Zero telemetry, 100% private, on-device compute." FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
-                                <TextBlock Text="• Low power: suspends simulation when still (0% CPU / GPU)." FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
-                                <TextBlock Text="• Settings persisted in %LOCALAPPDATA%\Dangly\settings.json" FontSize="12" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4" />
+                                <TextBlock Text="ENGINE SPECIFICATIONS" FontSize="10.5" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,8" />
+                                <TextBlock Text="Dangly puts a responsive, tactile ornament on your desktop that obeys real physical laws. The simulation runs a 20-segment Verlet integrator solved at fixed 240 Hz with Gauss-Seidel distance relaxation, dynamic stretch recoil, and independent bead projection." 
+                                           FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" TextWrapping="Wrap" LineHeight="17" Margin="0,0,10,0" />
+                                <TextBlock Text="• Fixed 240 Hz Verlet timestep decoupled from display refresh rate." FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                                <TextBlock Text="• Full-screen stretching freedom with elastic snap-back recoil." FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                                <TextBlock Text="• Zero telemetry, 100% private, on-device compute." FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                                <TextBlock Text="• Low power: suspends simulation when still (0% CPU / GPU)." FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                                <TextBlock Text="• Settings persisted in %LOCALAPPDATA%\Dangly\settings.json" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,4" />
                             </StackPanel>
                         </Border>
 
