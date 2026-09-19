@@ -35,6 +35,27 @@ public readonly record struct CharmColor(double Red, double Green, double Blue, 
         (byte)Math.Clamp((int)Math.Round(Blue * 255.0), 0, 255)
     );
 
+    public static CharmColor FromMediaColor(Color c) => new(
+        c.R / 255.0,
+        c.G / 255.0,
+        c.B / 255.0,
+        c.A / 255.0
+    );
+
+    public static CharmColor FromHex(string hex, CharmColor fallback = default)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(hex)) return fallback;
+            var c = (Color)ColorConverter.ConvertFromString(hex);
+            return FromMediaColor(c);
+        }
+        catch
+        {
+            return fallback;
+        }
+    }
+
     public SolidColorBrush ToBrush()
     {
         var brush = new SolidColorBrush(ToMediaColor());

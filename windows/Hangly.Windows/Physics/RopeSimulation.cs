@@ -168,10 +168,16 @@ public sealed class RopeSimulation
     public void Resize(Size canvasSize)
     {
         var fitted = RopeConfiguration.Fitted(canvasSize);
-        bool needsRebuild = _points.Count != fitted.PointCount;
+        var anchor = RopeConfiguration.Layout.Anchor(canvasSize);
+        Resize(fitted, anchor);
+    }
 
-        Configuration = fitted;
-        Anchor = RopeConfiguration.Layout.Anchor(canvasSize);
+    public void Resize(RopeConfiguration configuration, Vector2D anchor)
+    {
+        bool needsRebuild = _points.Count != configuration.PointCount;
+
+        Configuration = configuration;
+        Anchor = anchor;
         _currentSegmentLength = Configuration.SegmentLength;
 
         if (needsRebuild)

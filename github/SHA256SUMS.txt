@@ -1,2 +1,2 @@
-41f99bab06536329ddd313d1788ee1fcc49031c80890f9d4306a985df2992218  Dangly-Windows.zip
-ea1835ec1af3f559486eea9e3d985015fadbeb76a3c0a2435bf18efdfafb9fdf  Dangly-macOS.zip
+4998053a6f98a54d2cae09dafa93572124105202f0abca14f23ea5d90890dbe1  Dangly-Windows.zip
+add98d3c35f7b360ff46fff912d76f47fca7b6fdfece11d475ccc1b14cfe1555  Dangly-macOS.zip

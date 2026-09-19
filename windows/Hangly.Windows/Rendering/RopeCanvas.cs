@@ -16,6 +16,7 @@ public sealed class RopeCanvas : FrameworkElement
 {
     private RopeSnapshot _snapshot = new([], 0, 0, 0.9, [], 1.0, false);
     private ICharm _activeCharm = BuiltInCharms.Get(CharmKind.Circle);
+    private CharmCustomization? _customization;
     private bool _isDropTargeted;
     private double? _importSpinnerAngle;
 
@@ -35,6 +36,16 @@ public sealed class RopeCanvas : FrameworkElement
         set
         {
             _activeCharm = value;
+            InvalidateVisual();
+        }
+    }
+
+    public CharmCustomization? Customization
+    {
+        get => _customization;
+        set
+        {
+            _customization = value;
             InvalidateVisual();
         }
     }
@@ -65,24 +76,45 @@ public sealed class RopeCanvas : FrameworkElement
         }
     }
 
+    private CharmPalette GetEffectiveCordPalette()
+    {
+        var basePalette = _activeCharm.CordTint ?? _activeCharm.Palette;
+        if (_customization != null && !string.IsNullOrWhiteSpace(_customization.RopeColor))
+        {
+            try
+            {
+                var primary = CharmColor.FromHex(_customization.RopeColor, basePalette.Primary);
+                return CharmPalette.Derived(primary);
+            }
+            catch
+            {
+                // fallback
+            }
+        }
+        return basePalette;
+    }
+
     protected override void OnRender(DrawingContext dc)
     {
         base.OnRender(dc);
         if (_snapshot.Points.Count < 2) return;
 
-        var cordPalette = _activeCharm.CordTint ?? _activeCharm.Palette;
+        double charmScale = Math.Clamp(_customization?.CharmScale ?? 1.0, 0.4, 3.0);
+        double effectiveRadius = _snapshot.CharmRadius * charmScale;
+
+        var cordPalette = GetEffectiveCordPalette();
         var curve = new RopeCurve(_snapshot.Points, _snapshot.Points[^1]);
         double drawnCordLength = curve.ArcEnteringCircleAround(
             _snapshot.Points[^1],
-            _snapshot.CharmRadius * _snapshot.CharmKnotInset
+            effectiveRadius * _snapshot.CharmKnotInset
         );
 
         DrawRope(dc, curve, drawnCordLength, cordPalette);
         DrawBeads(dc, cordPalette);
-        DrawAmbientGlow(dc, _snapshot.Points[^1], _snapshot.CharmRadius, _activeCharm.Palette);
-        DrawCharm(dc, _snapshot.Points[^1], _snapshot.CharmRadius, _snapshot.CharmAngle);
-        DrawKnot(dc, curve, drawnCordLength, _snapshot.CharmRadius, _snapshot.CharmAngle, cordPalette);
-        DrawActivity(dc, _snapshot.Points[^1], _snapshot.CharmRadius);
+        DrawAmbientGlow(dc, _snapshot.Points[^1], effectiveRadius, cordPalette);
+        DrawCharm(dc, _snapshot.Points[^1], effectiveRadius, _snapshot.CharmAngle);
+        DrawKnot(dc, curve, drawnCordLength, effectiveRadius, _snapshot.CharmAngle, cordPalette);
+        DrawActivity(dc, _snapshot.Points[^1], effectiveRadius);
     }
 
     private void DrawRope(DrawingContext dc, RopeCurve curve, double drawnCordLength, CharmPalette palette)
@@ -90,7 +122,16 @@ public sealed class RopeCanvas : FrameworkElement
         var polyline = curve.Polyline(drawnCordLength);
         if (polyline.Count < 2) return;
 
-        double width = Math.Max(1.5, _snapshot.CharmRadius * 0.046);
+        double thicknessFactor = Math.Clamp(_customization?.RopeThickness ?? 1.0, 0.3, 4.0);
+        double width = Math.Max(1.5, _snapshot.CharmRadius * 0.046) * thicknessFactor;
+
+        double ropeOpacity = Math.Clamp(_customization?.RopeOpacity ?? 1.0, 0.05, 1.0);
+        bool pushedRopeOpacity = false;
+        if (ropeOpacity < 0.999)
+        {
+            dc.PushOpacity(ropeOpacity);
+            pushedRopeOpacity = true;
+        }
 
         // Build StreamGeometry from polyline
         var ropeGeo = new StreamGeometry();
@@ -194,6 +235,11 @@ public sealed class RopeCanvas : FrameworkElement
         dc.PushTransform(new TranslateTransform(-width * 0.18, -width * 0.18));
         dc.DrawGeometry(null, highlightPen, ropeGeo);
         dc.Pop();
+
+        if (pushedRopeOpacity)
+        {
+            dc.Pop();
+        }
     }
 
     private void DrawBeads(DrawingContext dc, CharmPalette cordPalette)
@@ -243,12 +289,19 @@ public sealed class RopeCanvas : FrameworkElement
         }
     }
 
-    private static void DrawAmbientGlow(DrawingContext dc, Vector2D center, double radius, CharmPalette palette)
+    private void DrawAmbientGlow(DrawingContext dc, Vector2D center, double radius, CharmPalette palette)
     {
         if (radius <= 2.0) return;
-        double haloRadius = radius * 1.7;
+        double glowIntensity = _customization?.GlowIntensity ?? 0.20;
+        if (glowIntensity <= 0.005) return;
 
+        double haloRadius = radius * (1.2 + (glowIntensity * 1.5));
         var tint = palette.Primary;
+        if (!string.IsNullOrEmpty(_customization?.AccentColor))
+        {
+            tint = CharmColor.FromHex(_customization.AccentColor, tint);
+        }
+
         var glowBrush = new RadialGradientBrush
         {
             GradientOrigin = new Point(0.5, 0.5),
@@ -257,8 +310,8 @@ public sealed class RopeCanvas : FrameworkElement
             RadiusY = 0.5,
             GradientStops =
             [
-                new GradientStop(tint.WithAlpha(0.20).ToMediaColor(), 0.4),
-                new GradientStop(tint.WithAlpha(0.08).ToMediaColor(), 0.7),
+                new GradientStop(tint.WithAlpha(Math.Clamp(glowIntensity * 0.45, 0.0, 1.0)).ToMediaColor(), 0.3),
+                new GradientStop(tint.WithAlpha(Math.Clamp(glowIntensity * 0.18, 0.0, 1.0)).ToMediaColor(), 0.7),
                 new GradientStop(tint.WithAlpha(0.00).ToMediaColor(), 1.0)
             ]
         };
@@ -272,17 +325,89 @@ public sealed class RopeCanvas : FrameworkElement
         double side = radius * 2.0;
         if (side <= 0) return;
 
-        double rotationAngleDegrees = (charmAngle - Math.PI / 2.0) * 180.0 / Math.PI;
+        double baseAngleDegrees = (charmAngle - Math.PI / 2.0) * 180.0 / Math.PI;
+        double customRotation = _customization?.RotationAngle ?? 0.0;
+        double rotationAngleDegrees = baseAngleDegrees + customRotation;
+
+        double flipX = (_customization?.FlipHorizontal == true) ? -1.0 : 1.0;
+        double flipY = (_customization?.FlipVertical == true) ? -1.0 : 1.0;
+
+        double charmOpacity = Math.Clamp(_customization?.CharmOpacity ?? 1.0, 0.05, 1.0);
+        bool pushedCharmOpacity = false;
+        if (charmOpacity < 0.999)
+        {
+            dc.PushOpacity(charmOpacity);
+            pushedCharmOpacity = true;
+        }
+
+        // Drop shadow under charm
+        double shadowIntensity = _customization?.ShadowIntensity ?? 0.35;
+        if (shadowIntensity > 0.01)
+        {
+            double shadowOffset = Math.Max(2.0, radius * 0.08);
+            var shadowBrush = new RadialGradientBrush
+            {
+                GradientOrigin = new Point(0.5, 0.5),
+                Center = new Point(0.5, 0.5),
+                RadiusX = 0.5,
+                RadiusY = 0.5,
+                GradientStops =
+                [
+                    new GradientStop(Color.FromArgb((byte)(Math.Clamp(shadowIntensity, 0, 1) * 160), 0, 0, 0), 0.3),
+                    new GradientStop(Color.FromArgb((byte)(Math.Clamp(shadowIntensity, 0, 1) * 60), 0, 0, 0), 0.7),
+                    new GradientStop(Color.FromArgb(0, 0, 0, 0), 1.0)
+                ]
+            };
+            shadowBrush.Freeze();
+            dc.DrawEllipse(shadowBrush, null, new Point(center.X, center.Y + shadowOffset), radius * 1.15, radius * 0.95);
+        }
 
         dc.PushTransform(new TranslateTransform(center.X, center.Y));
         dc.PushTransform(new RotateTransform(rotationAngleDegrees));
+        bool hasFlip = flipX < 0 || flipY < 0;
+        if (hasFlip)
+        {
+            dc.PushTransform(new ScaleTransform(flipX, flipY));
+        }
         dc.PushTransform(new TranslateTransform(-radius, -radius));
 
         _activeCharm.DrawBody(dc, side);
 
-        dc.Pop();
-        dc.Pop();
-        dc.Pop();
+        // Specular shine glint overlay if configured
+        double shineIntensity = _customization?.ShineIntensity ?? 0.50;
+        if (shineIntensity > 0.05)
+        {
+            var glintBrush = new SolidColorBrush(Color.FromArgb((byte)(Math.Clamp(shineIntensity, 0, 1) * 180), 255, 255, 255));
+            glintBrush.Freeze();
+            dc.DrawEllipse(glintBrush, null, new Point(side * 0.36, side * 0.32), radius * 0.16 * shineIntensity, radius * 0.10 * shineIntensity);
+        }
+
+        // Outline border if configured
+        double outlineThickness = _customization?.OutlineThickness ?? 0.0;
+        if (outlineThickness > 0.1)
+        {
+            Color outlineCol = Colors.White;
+            if (!string.IsNullOrEmpty(_customization?.OutlineColor))
+            {
+                try { outlineCol = (Color)ColorConverter.ConvertFromString(_customization.OutlineColor); } catch { }
+            }
+            var outlinePen = new Pen(new SolidColorBrush(outlineCol), outlineThickness);
+            outlinePen.Freeze();
+            dc.DrawEllipse(null, outlinePen, new Point(radius, radius), radius * 0.98, radius * 0.98);
+        }
+
+        dc.Pop(); // Translate (-radius, -radius)
+        if (hasFlip)
+        {
+            dc.Pop(); // ScaleTransform(flipX, flipY)
+        }
+        dc.Pop(); // RotateTransform
+        dc.Pop(); // Translate (center.X, center.Y)
+
+        if (pushedCharmOpacity)
+        {
+            dc.Pop(); // Opacity
+        }
     }
 
     private void DrawKnot(DrawingContext dc, RopeCurve curve, double drawnCordLength, double radius, double charmAngle, CharmPalette palette)

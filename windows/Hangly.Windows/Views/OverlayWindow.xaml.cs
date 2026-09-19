@@ -40,6 +40,9 @@ public partial class OverlayWindow : Window
     private Vector2D _currentVelocity = Vector2D.Zero;
     private bool _isTickerActive;
 
+    public SettingsStore SettingsStore => _settingsStore;
+    public ICharm ActiveCharm => _activeCharm;
+
     public event Action<string>? ImageDropped;
 
     public OverlayWindow(SettingsStore settingsStore, AudioService audioService, CustomCharmStore customCharmStore)
@@ -168,6 +171,7 @@ public partial class OverlayWindow : Window
 
         _activeCharm = resolvedCharm;
         Canvas.ActiveCharm = _activeCharm;
+        Canvas.Customization = overlay.GetCustomizationFor(overlay.CharmId);
         _simulation.SetCharmMetrics(_activeCharm.Metrics);
         _simulation.SetBeads(_activeCharm.Beads);
 
@@ -175,10 +179,18 @@ public partial class OverlayWindow : Window
         WakeTicker();
     }
 
+    public void ApplyCustomization(CharmCustomization customization)
+    {
+        Canvas.Customization = customization;
+        _settingsStore.Settings.Overlay.SetCustomizationFor(_settingsStore.Settings.Overlay.CharmId, customization);
+        WakeTicker();
+    }
+
     public void SetCharm(ICharm charm)
     {
         _activeCharm = charm;
         Canvas.ActiveCharm = charm;
+        Canvas.Customization = _settingsStore.Settings.Overlay.GetCustomizationFor(charm.Id.StorageValue);
         _simulation.SetCharmMetrics(charm.Metrics);
         _simulation.SetBeads(charm.Beads);
         _settingsStore.Update(s => s.Overlay.Charm = charm.Id);

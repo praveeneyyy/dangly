@@ -22,6 +22,24 @@ public sealed class OverlaySettings
     public bool IsClickThrough { get; set; } = true;
     public string CharmId { get; set; } = "daruma";
 
+    public CharmCustomization Customization { get; set; } = new();
+    public Dictionary<string, CharmCustomization> CharmCustomizations { get; set; } = new();
+
+    public CharmCustomization GetCustomizationFor(string charmId)
+    {
+        if (CharmCustomizations.TryGetValue(charmId, out var cust))
+        {
+            return cust;
+        }
+        return Customization;
+    }
+
+    public void SetCustomizationFor(string charmId, CharmCustomization cust)
+    {
+        CharmCustomizations[charmId] = cust;
+        Customization = cust;
+    }
+
     [JsonIgnore]
     public CharmID Charm
     {
